@@ -1,0 +1,34 @@
+"""
+Config file.
+"""
+
+"""
+Slack token of user to receive messages. This user should be able to read messages you want to receive.
+"""
+SLACK_RECEIVER_TOKEN = "xoxp-xxxxx"
+
+"""
+Slack token of personal user to read messages. This user posts copied messages, filters unmuted channels.
+"""
+SLACK_PERSONAL_TOKEN = "xoxp-xxxxx"
+
+"""
+Slack channel to post.
+"""
+SLACK_POST_CHANNEL = "#more-one-memo"
+
+"""
+Slack default username (used in debug log)
+"""
+SLACK_DEFAULT_USERNAME = "Chito"
+
+"""
+Slack default icon emoji (used in debug log)
+"""
+SLACK_DEFAULT_ICON_EMOJI = ":upside_down_face:"
+
+"""
+'Kind' of config object in Google DataStore.
+"""
+DATASTORE_CONFIG_KIND = "more-one-memo-config"
+
