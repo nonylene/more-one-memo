@@ -1,0 +1,1 @@
+from .data import get_config, put_config

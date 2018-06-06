@@ -1,7 +1,7 @@
 from google.cloud import datastore
 from google.cloud.datastore import Client
 
-from app.datastore import get_config, put_config
+from app.data import get_config, put_config
 from app.model import UserConfig, SlackConfig
 from app.slack import run_client
 

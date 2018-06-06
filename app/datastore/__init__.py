@@ -1,1 +1,0 @@
-from .datastore import get_config, put_config
