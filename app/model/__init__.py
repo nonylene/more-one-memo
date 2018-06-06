@@ -1,1 +1,1 @@
-from .model import UserConfig
+from .model import UserConfig, SlackConfig
