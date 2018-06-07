@@ -1,5 +1,6 @@
 import config
-from app.slack import run_client, SlackConfig
+from app.slack import run_client
+from app.slack.model import SlackConfig
 
 # DATASTORE_CLIENT = datastore.Client()
 #
