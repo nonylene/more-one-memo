@@ -1,1 +1,1 @@
-from .websocket import run_client
+from .slack import run_client

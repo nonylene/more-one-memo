@@ -20,15 +20,15 @@ class WebSocketClient:
         self.logger = logger
 
     def _on_open(self, ws: websocket.WebSocketApp) -> None:
-        message = "connection opened!"
+        message = "Connection opened!"
         self.logger(message)
 
     def _on_close(self, ws: websocket.WebSocketApp, *close_args) -> None:
-        message = "connection closed!"
+        message = "Connection closed!"
         self.logger(message)
         if not interrupted:
             # retry
-            print("reconnecting...")
+            self.logger("Reconnecting...")
             time.sleep(2)
             self.run()
 
@@ -67,5 +67,5 @@ class WebSocketClient:
 
         except Exception as e:
             traceback.print_exc()
-            self.logger("create websocket failed: {0}".format(e))
+            self.logger("Create websocket failed: {0}".format(e))
             raise
