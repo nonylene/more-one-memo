@@ -10,7 +10,9 @@ from typing import Optional
 
 import websocket
 
-from ..model.model import SlackConfig
+from app.slack.model.model import SlackConfig
+
+from .client import post_message
 
 
 class Client:
@@ -22,13 +24,13 @@ class Client:
         message = "connection opened!"
         print(message)
         # post slack
-        _post_message(self.slack_config, message)
+        post_message(self.slack_config, message)
 
     def _on_close(self, ws: websocket.WebSocketApp, *close_args) -> None:
         message = "connection closed!"
         print(message)
         # post slack error
-        _post_message(self.slack_config, message)
+        post_message(self.slack_config, message)
         if not interrupted:
             # retry
             print("reconnecting...")
@@ -70,37 +72,11 @@ class Client:
 
         except Exception as e:
             traceback.print_exc()
-            _post_message(
+            post_message(
                 self.slack_config,
                 "create websocket failed: {0}".format(e)
             )
             raise
-
-
-def _post_message(
-        slack_config: SlackConfig,
-        text: str,
-        channel: Optional[str] = None, username: Optional[str] = None, icon_emoji: Optional[str] = None,
-) -> None:
-    if channel is None:
-        channel = slack_config.debug_channel
-    if username is None:
-        username = slack_config.default_username
-    if icon_emoji is None:
-        icon_emoji = slack_config.default_icon_emoji
-
-    data = {
-        "token": slack_config.personal_token,
-        "channel": channel,
-        "text": text,
-        "icon_emoji": icon_emoji,
-        "username": username
-    }
-    post_data = urllib.parse.urlencode(data).encode()
-    urllib.request.urlopen(
-        "https://slack.com/api/chat.postMessage",
-        data=post_data
-    )
 
 
 def run_client(slack_config: SlackConfig):
