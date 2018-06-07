@@ -10,13 +10,11 @@ from typing import Callable
 
 import websocket
 
-from ..model import SlackConfig
-
 
 class WebSocketClient:
 
-    def __init__(self, slack_config: SlackConfig, logger: Callable[[str], None]) -> None:
-        self.slack_config = slack_config
+    def __init__(self, token: str, logger: Callable[[str], None]) -> None:
+        self.token = token
         self.logger = logger
 
     def _on_open(self, ws: websocket.WebSocketApp) -> None:
@@ -46,9 +44,7 @@ class WebSocketClient:
         print(message_data)
 
     def run(self) -> None:
-        params = urllib.parse.urlencode({'token': self.slack_config.collector_token})
-        # TODO: channel info
-        # TODO: user info
+        params = urllib.parse.urlencode({'token': self.token})
         try:
             start_api = "https://slack.com/api/rtm.connect?{0}".format(params)
             res = urllib.request.urlopen(start_api)
