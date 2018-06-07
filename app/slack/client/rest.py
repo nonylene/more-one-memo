@@ -3,7 +3,7 @@ import urllib.parse
 import urllib.request
 from typing import List
 
-from ..model import Channel, User
+from .model import Channel, User
 
 
 class RestClient:
