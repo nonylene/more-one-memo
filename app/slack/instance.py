@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict
 
 from .client import RestClient
 from .client.model import User, Channel
@@ -10,24 +10,27 @@ class Instance:
     Class for keeping global variable.
     """
 
-    def __init__(self,
-                 slack_config: SlackConfig, rest_client: RestClient,
-                 users: Dict[str, User], channels: Dict[str, Channel]
-                 ):
+    def __init__(self):
         """
         :param slack_config:
         :param rest_client:
         :param users: Dictionary of id and Channel object
         :param channels: Dictionary of id and Channel object
         """
-        self.slack_config = slack_config
-        self.rest_client = rest_client
-        self.users = users
-        self.channels = channels
+        self.slack_config: SlackConfig = None
+        self.rest_client: RestClient = None
+        self.users: Dict[str, User] = None
+        self.channels: Dict[str, Channel] = None
 
 
-INSTANCE: Instance = None
+INSTANCE: Instance = Instance()
 
-def set_instance(instance: Instance):
-    global INSTANCE
-    INSTANCE = instance
+
+def init(
+        slack_config: SlackConfig, rest_client: RestClient,
+        users: Dict[str, User], channels: Dict[str, Channel]
+):
+    INSTANCE.slack_config = slack_config
+    INSTANCE.rest_client = rest_client
+    INSTANCE.users = users
+    INSTANCE.channels = channels

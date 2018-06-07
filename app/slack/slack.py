@@ -1,6 +1,6 @@
 from .client import WebSocketClient, RestClient
 from .instance import INSTANCE as I
-from .instance import Instance, set_instance
+from .instance import init
 from .model import SlackConfig
 
 
@@ -17,12 +17,12 @@ def _logger(text: str):
 def run_client(slack_config: SlackConfig):
     rest_client = RestClient(slack_config.personal_token)
 
-    set_instance(Instance(
+    init(
         slack_config,
         rest_client,
         dict((user.id, user) for user in rest_client.get_users()),
         dict((channel.id, channel) for channel in rest_client.get_channels()),
-    ))
+    )
 
     websocket_client = WebSocketClient(slack_config.collector_token, _logger)
     websocket_client.run()
