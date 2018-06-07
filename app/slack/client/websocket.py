@@ -18,7 +18,7 @@ class WebSocketClient:
     def __init__(self, token: str, logger: Callable[[str], None], handlers: List[Handler]) -> None:
         self.token = token
         self.logger = logger
-        self.handers = handlers
+        self.handlers = handlers
 
     def _on_open(self, ws: websocket.WebSocketApp) -> None:
         message = "Connection opened!"
@@ -44,7 +44,7 @@ class WebSocketClient:
     def _on_message(self, ws: websocket.WebSocketApp, message) -> None:
         message_data = json.loads(message)
         print(message_data)  # TODO: debug
-        for handler in self.handers:
+        for handler in self.handlers:
             handler(message_data)
 
     def run(self) -> None:
