@@ -37,7 +37,7 @@ class RestClient:
         data = json.loads(res.read().decode())
         return [Channel.from_json(obj) for obj in data['channels']]
 
-    def get_users(self) -> List[Channel]:
+    def get_users(self) -> List[User]:
         """
         https://api.slack.com/methods/users.list
         """
