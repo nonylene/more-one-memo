@@ -1,6 +1,7 @@
 import functools
 from typing import Callable
 
+from .client import Handler
 from .client.model import User, Channel
 from .instance import INSTANCE as I
 
@@ -63,7 +64,7 @@ def update_channel_unarchive(json: dict):
 def update_channel_created(json: dict):
     channel_json = json['channel']
     id = channel_json['id']
-    I.channels[id] = Channel(id, channel_json['name'], True)
+    I.channels[id] = Channel(id, channel_json['name'], False)
 
 
 @_handler('channel_deleted')

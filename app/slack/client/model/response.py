@@ -7,13 +7,14 @@ class Channel(NamedTuple):
     """
     id: str
     name: str
+    is_archived: bool
 
     def get_link(self):
         return '<#{0}|{1}>'.format(self.id, self.name)
 
     @staticmethod
     def from_json(json: dict):
-        return Channel(json['id'], json['name'])
+        return Channel(json['id'], json['name'], json['is_archived'])
 
 
 class Profile(NamedTuple):

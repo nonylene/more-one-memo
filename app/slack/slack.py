@@ -1,14 +1,25 @@
+from . import handlers
 from .client import WebSocketClient, RestClient
 from .instance import INSTANCE as I
 from .instance import init
 from .model import SlackConfig
+
+_HANDLERS = [
+    handlers.update_user_change,
+    handlers.update_user_join,
+    handlers.update_channel_archive,
+    handlers.update_channel_unarchive,
+    handlers.update_channel_created,
+    handlers.update_channel_deleted,
+    handlers.update_channel_rename,
+]
 
 
 def _logger(text: str):
     print(text)
     I.rest_client.post_message(
         text,
-        I.rest_client.debug_channel,
+        I.slack_config.debug_channel,
         I.slack_config.default_username,
         I.slack_config.default_icon_emoji
     )
@@ -24,5 +35,5 @@ def run_client(slack_config: SlackConfig):
         dict((channel.id, channel) for channel in rest_client.get_channels()),
     )
 
-    websocket_client = WebSocketClient(slack_config.collector_token, _logger)
+    websocket_client = WebSocketClient(slack_config.collector_token, _logger, _HANDLERS)
     websocket_client.run()

@@ -6,16 +6,19 @@ import time
 import traceback
 import urllib.parse
 import urllib.request
-from typing import Callable
+from typing import Callable, List
 
 import websocket
+
+Handler = Callable[[dict], None]
 
 
 class WebSocketClient:
 
-    def __init__(self, token: str, logger: Callable[[str], None]) -> None:
+    def __init__(self, token: str, logger: Callable[[str], None], handlers: List[Handler]) -> None:
         self.token = token
         self.logger = logger
+        self.handers = handlers
 
     def _on_open(self, ws: websocket.WebSocketApp) -> None:
         message = "Connection opened!"
@@ -40,8 +43,9 @@ class WebSocketClient:
 
     def _on_message(self, ws: websocket.WebSocketApp, message) -> None:
         message_data = json.loads(message)
-        # TODO
-        print(message_data)
+        print(message_data)  # TODO: debug
+        for handler in self.handers:
+            handler(message_data)
 
     def run(self) -> None:
         params = urllib.parse.urlencode({'token': self.token})
