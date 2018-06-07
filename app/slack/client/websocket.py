@@ -6,31 +6,26 @@ import time
 import traceback
 import urllib.parse
 import urllib.request
-from typing import Optional
+from typing import Callable
 
 import websocket
 
-from app.slack.model.model import SlackConfig
-
-from .client import post_message
+from ..model import SlackConfig
 
 
-class Client:
+class WebSocketClient:
 
-    def __init__(self, slack_config: SlackConfig) -> None:
+    def __init__(self, slack_config: SlackConfig, logger: Callable[[str], None]) -> None:
         self.slack_config = slack_config
+        self.logger = logger
 
     def _on_open(self, ws: websocket.WebSocketApp) -> None:
         message = "connection opened!"
-        print(message)
-        # post slack
-        post_message(self.slack_config, message)
+        self.logger(message)
 
     def _on_close(self, ws: websocket.WebSocketApp, *close_args) -> None:
         message = "connection closed!"
-        print(message)
-        # post slack error
-        post_message(self.slack_config, message)
+        self.logger(message)
         if not interrupted:
             # retry
             print("reconnecting...")
@@ -72,13 +67,5 @@ class Client:
 
         except Exception as e:
             traceback.print_exc()
-            post_message(
-                self.slack_config,
-                "create websocket failed: {0}".format(e)
-            )
+            self.logger("create websocket failed: {0}".format(e))
             raise
-
-
-def run_client(slack_config: SlackConfig):
-    client = Client(slack_config)
-    client.run()
