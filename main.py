@@ -15,7 +15,7 @@ import config
 
 
 slack_config = SlackConfig(
-    config.SLACK_RECEIVER_TOKEN, config.SLACK_PERSONAL_TOKEN,
+    config.SLACK_COLLECTOR_TOKEN, config.SLACK_PERSONAL_TOKEN,
     config.SLACK_POST_CHANNEL, config.SLACK_DEBUG_CHANNEL,
     config.SLACK_DEFAULT_USERNAME, config.SLACK_DEFAULT_ICON_EMOJI
 )

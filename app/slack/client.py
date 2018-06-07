@@ -49,7 +49,7 @@ class Client:
         print(message_data)
 
     def run(self) -> None:
-        params = urllib.parse.urlencode({'token': self.slack_config.receiver_token})
+        params = urllib.parse.urlencode({'token': self.slack_config.collector_token})
         # TODO: channel info
         # TODO: user info
         try:

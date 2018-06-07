@@ -5,7 +5,7 @@ Config file.
 """
 Slack token of user to receive messages. This user should be able to read messages you want to receive.
 """
-SLACK_RECEIVER_TOKEN = "xoxp-xxxxx"
+SLACK_COLLECTOR_TOKEN = "xoxp-xxxxx"
 
 """
 Slack token of personal user to read messages. This user posts copied messages, filters unmuted channels.

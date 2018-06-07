@@ -11,7 +11,7 @@ class UserConfig(NamedTuple):
 
 
 class SlackConfig(NamedTuple):
-    receiver_token: str
+    collector_token: str
     personal_token: str
     post_channel: str
     debug_channel: str
