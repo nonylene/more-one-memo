@@ -2,6 +2,7 @@ from . import handlers
 from .client import WebSocketClient, RestClient
 from .instance import GLOBAL_INSTANCE as GI
 from .instance import init
+from .message_handler import handle_message
 from .model import SlackConfig
 
 _HANDLERS = [
@@ -15,6 +16,8 @@ _HANDLERS = [
     handlers.update_channel_created,
     handlers.update_channel_deleted,
     handlers.update_channel_rename,
+    # Message
+    handle_message,
 ]
 
 
@@ -24,7 +27,8 @@ def _logger(text: str):
         text,
         GI.slack_config.debug_channel,
         GI.slack_config.default_username,
-        GI.slack_config.default_icon_emoji
+        GI.slack_config.default_icon_emoji,
+        None
     )
 
 

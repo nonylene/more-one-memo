@@ -1,7 +1,7 @@
 import json
 import urllib.parse
 import urllib.request
-from typing import List
+from typing import List, Optional
 
 from .model import Channel, User
 
@@ -11,17 +11,24 @@ class RestClient:
     def __init__(self, token: str):
         self.token = token
 
-    def post_message(self, text: str, channel: str, username: str, icon_emoji: str) -> None:
+    def post_message(
+            self, text: str, channel: str, username: str,
+            icon_emoji: Optional[str], icon_url: Optional[str]
+    ) -> None:
         data = {
-            "token": self.token,
-            "channel": channel,
-            "text": text,
-            "icon_emoji": icon_emoji,
-            "username": username
+            'token': self.token,
+            'channel': channel,
+            'text': text,
+            'username': username
         }
+        if icon_emoji:
+            data['icon_emoji'] = icon_emoji
+        if icon_url:
+            data['icon_url'] = icon_url
+
         post_data = urllib.parse.urlencode(data).encode()
         urllib.request.urlopen(
-            "https://slack.com/api/chat.postMessage",
+            'https://slack.com/api/chat.postMessage',
             data=post_data
         )
 
