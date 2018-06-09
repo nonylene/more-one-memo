@@ -26,9 +26,7 @@ class RestClient:
         )
 
     def get_channels(self) -> List[Channel]:
-        """
-        https://api.slack.com/methods/channels.list
-        """
+        # https://api.slack.com/methods/channels.list
         data = {
             "token": self.token,
         }
@@ -38,9 +36,7 @@ class RestClient:
         return [Channel.from_json(obj) for obj in data['channels']]
 
     def get_users(self) -> List[User]:
-        """
-        https://api.slack.com/methods/users.list
-        """
+        # https://api.slack.com/methods/users.list
         data = {
             "token": self.token,
         }

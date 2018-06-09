@@ -5,9 +5,8 @@ from .client import Handler
 from .client.model import User, Channel
 from .instance import INSTANCE as I
 
-"""
-https://api.slack.com/rtm#events
-"""
+
+# https://api.slack.com/rtm#events
 
 
 def _handler(type: str) -> Callable[[Handler], Handler]:
@@ -15,7 +14,7 @@ def _handler(type: str) -> Callable[[Handler], Handler]:
     :return: decorator to filter function call by type
     """
 
-    def _handler_decorator(handler: Callable[[dict], None]) -> Callable[[dict], None]:
+    def _handler_decorator(handler: Handler) -> Handler:
         """
         :return: function with type filter
         """
@@ -30,7 +29,7 @@ def _handler(type: str) -> Callable[[Handler], Handler]:
     return _handler_decorator
 
 
-## User
+# User
 
 @_handler('user_change')
 def update_user_change(json: dict):
@@ -44,7 +43,19 @@ def update_user_join(json: dict):
     I.users[user.id] = user
 
 
-## Channel
+@_handler('bot_changed')
+def update_bot_change(json: dict):
+    user = User.from_json(json['bot'])
+    I.users[user.id] = user
+
+
+@_handler('bot_added')
+def update_bot_add(json: dict):
+    user = User.from_json(json['bot'])
+    I.users[user.id] = user
+
+
+# Channel
 
 @_handler('channel_archive')
 def update_channel_archive(json: dict):

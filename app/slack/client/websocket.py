@@ -36,8 +36,8 @@ class WebSocketClient:
     def _on_error(self, ws: websocket.WebSocketApp, error) -> None:
         traceback.print_exc()
         # KeyboardInterrupt arrive here (0.37)
-        # SystemError not arrive here (0.37~)
-        if isinstance(error, SystemError) or isinstance(error, KeyboardInterrupt):
+        # SystemExit not arrive here (0.37~)
+        if isinstance(error, SystemExit) or isinstance(error, KeyboardInterrupt):
             global interrupted
             interrupted = True
 

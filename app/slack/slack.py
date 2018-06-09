@@ -5,8 +5,11 @@ from .instance import init
 from .model import SlackConfig
 
 _HANDLERS = [
+    # Management
     handlers.update_user_change,
     handlers.update_user_join,
+    handlers.update_bot_add,
+    handlers.update_bot_change,
     handlers.update_channel_archive,
     handlers.update_channel_unarchive,
     handlers.update_channel_created,
