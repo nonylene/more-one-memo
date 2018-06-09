@@ -1,16 +1,19 @@
-from typing import NamedTuple
+from typing import NamedTuple, Optional
+
+UserID = str
+ChannelID = str
 
 
 class Channel(NamedTuple):
     """
     https://api.slack.com/types/channel
     """
-    id: str
+    id: ChannelID
     name: str
     is_archived: bool
 
     def get_link(self):
-        return '<#{0}|{1}>'.format(self.id, self.name)
+        return f'<#{self.id}|{self.name}>'
 
     @staticmethod
     def from_json(json: dict):
@@ -29,10 +32,11 @@ class User(NamedTuple):
     """
     https://api.slack.com/types/user
     """
-    id: str
+    id: UserID
     name: str
     profile: Profile
 
     @staticmethod
     def from_json(json: dict):
         return User(json['id'], json['name'], Profile.from_json(json['profile']))
+

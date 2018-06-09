@@ -1,7 +1,7 @@
 from typing import Dict
 
 from .client import RestClient
-from .client.model import User, Channel
+from .client.model import User, Channel, UserID, ChannelID
 from .model import SlackConfig
 
 
@@ -19,8 +19,8 @@ class Instance:
         """
         self.slack_config: SlackConfig = None
         self.rest_client: RestClient = None
-        self.users: Dict[str, User] = None
-        self.channels: Dict[str, Channel] = None
+        self.users: Dict[UserID, User] = None
+        self.channels: Dict[ChannelID, Channel] = None
 
 
 GLOBAL_INSTANCE: Instance = Instance()
@@ -28,7 +28,7 @@ GLOBAL_INSTANCE: Instance = Instance()
 
 def init(
         slack_config: SlackConfig, rest_client: RestClient,
-        users: Dict[str, User], channels: Dict[str, Channel]
+        users: Dict[UserID, User], channels: Dict[ChannelID, Channel]
 ):
     GLOBAL_INSTANCE.slack_config = slack_config
     GLOBAL_INSTANCE.rest_client = rest_client
