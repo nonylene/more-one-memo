@@ -3,13 +3,13 @@ from typing import Callable
 
 from .client import Handler
 from .client.model import User, Channel
-from .instance import INSTANCE as I
+from .instance import GLOBAL_INSTANCE as GI
 
 
 # https://api.slack.com/rtm#events
 
 
-def _handler(type: str) -> Callable[[Handler], Handler]:
+def _handler(event_type: str) -> Callable[[Handler], Handler]:
     """
     :return: decorator to filter function call by type
     """
@@ -21,7 +21,7 @@ def _handler(type: str) -> Callable[[Handler], Handler]:
 
         @functools.wraps(handler)
         def filtered_handler(json: dict):
-            if json['type'] == type:
+            if json['type'] == event_type:
                 handler(json)
 
         return filtered_handler
@@ -34,58 +34,58 @@ def _handler(type: str) -> Callable[[Handler], Handler]:
 @_handler('user_change')
 def update_user_change(json: dict):
     user = User.from_json(json['user'])
-    I.users[user.id] = user
+    GI.users[user.id] = user
 
 
 @_handler('team_join')
 def update_user_join(json: dict):
     user = User.from_json(json['user'])
-    I.users[user.id] = user
+    GI.users[user.id] = user
 
 
 @_handler('bot_changed')
 def update_bot_change(json: dict):
     user = User.from_json(json['bot'])
-    I.users[user.id] = user
+    GI.users[user.id] = user
 
 
 @_handler('bot_added')
 def update_bot_add(json: dict):
     user = User.from_json(json['bot'])
-    I.users[user.id] = user
+    GI.users[user.id] = user
 
 
 # Channel
 
 @_handler('channel_archive')
 def update_channel_archive(json: dict):
-    id = json['channel']
-    channel = I.channels[id]
-    I.channels[id] = Channel(channel.id, channel.name, True)
+    id_ = json['channel']
+    channel = GI.channels[id_]
+    GI.channels[id_] = Channel(channel.id, channel.name, True)
 
 
 @_handler('channel_unarchive')
 def update_channel_unarchive(json: dict):
-    id = json['channel']
-    channel = I.channels[id]
-    I.channels[id] = Channel(channel.id, channel.name, False)
+    id_ = json['channel']
+    channel = GI.channels[id_]
+    GI.channels[id_] = Channel(channel.id, channel.name, False)
 
 
 @_handler('channel_created')
 def update_channel_created(json: dict):
     channel_json = json['channel']
-    id = channel_json['id']
-    I.channels[id] = Channel(id, channel_json['name'], False)
+    id_ = channel_json['id']
+    GI.channels[id_] = Channel(id_, channel_json['name'], False)
 
 
 @_handler('channel_deleted')
 def update_channel_deleted(json: dict):
-    del I.channels[json['channel']]
+    del GI.channels[json['channel']]
 
 
 @_handler('channel_rename')
 def update_channel_rename(json: dict):
     channel_json = json['channel']
-    id = channel_json['id']
-    channel = I.channels[id]
-    I.channels[id] = Channel(channel.id, channel_json['name'], channel.is_archived)
+    id_ = channel_json['id']
+    channel = GI.channels[id_]
+    GI.channels[id_] = Channel(channel.id, channel_json['name'], channel.is_archived)

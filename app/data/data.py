@@ -14,7 +14,7 @@ def put_config(client: datastore.Client, kind: str, config: UserConfig):
     client.put(config_entity)
 
 
-def get_config(client: datastore.Client, kind: str, id: str) -> UserConfig:
-    config_key = client.key(kind, id)
+def get_config(client: datastore.Client, kind: str, id_: str) -> UserConfig:
+    config_key = client.key(kind, id_)
     entity = client.get(config_key)
     return UserConfig.from_entity(entity)

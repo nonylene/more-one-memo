@@ -3,6 +3,7 @@ Common models.
 """
 
 from typing import NamedTuple
+
 from google.cloud import datastore
 
 

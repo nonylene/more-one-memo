@@ -12,10 +12,10 @@ class Instance:
 
     def __init__(self):
         """
-        :param slack_config:
-        :param rest_client:
-        :param users: Dictionary of id and Channel object
-        :param channels: Dictionary of id and Channel object
+        :slack_config:
+        :rest_client:
+        :users: Dictionary of id and Channel object
+        :channels: Dictionary of id and Channel object
         """
         self.slack_config: SlackConfig = None
         self.rest_client: RestClient = None
@@ -23,14 +23,14 @@ class Instance:
         self.channels: Dict[str, Channel] = None
 
 
-INSTANCE: Instance = Instance()
+GLOBAL_INSTANCE: Instance = Instance()
 
 
 def init(
         slack_config: SlackConfig, rest_client: RestClient,
         users: Dict[str, User], channels: Dict[str, Channel]
 ):
-    INSTANCE.slack_config = slack_config
-    INSTANCE.rest_client = rest_client
-    INSTANCE.users = users
-    INSTANCE.channels = channels
+    GLOBAL_INSTANCE.slack_config = slack_config
+    GLOBAL_INSTANCE.rest_client = rest_client
+    GLOBAL_INSTANCE.users = users
+    GLOBAL_INSTANCE.channels = channels
