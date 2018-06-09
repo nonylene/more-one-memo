@@ -21,19 +21,17 @@ class WebSocketClient:
         self.handlers = handlers
 
     def _on_open(self, ws: websocket.WebSocketApp) -> None:
-        message = "Connection opened!"
-        self.logger(message)
+        self.logger("Connection opened!")
 
     def _on_close(self, ws: websocket.WebSocketApp, *close_args) -> None:
-        message = "Connection closed!"
-        self.logger(message)
+        self.logger("Connection closed!")
         if not interrupted:
             # retry
             self.logger("Reconnecting...")
             time.sleep(2)
             self.run()
 
-    def _on_error(self, ws: websocket.WebSocketApp, error) -> None:
+    def _on_error(self, ws: websocket.WebSocketApp, error: BaseException) -> None:
         traceback.print_exc()
         # KeyboardInterrupt arrive here (0.37)
         # SystemExit not arrive here (0.37~)
@@ -41,11 +39,16 @@ class WebSocketClient:
             global interrupted
             interrupted = True
 
-    def _on_message(self, ws: websocket.WebSocketApp, message) -> None:
+    def _on_message(self, ws: websocket.WebSocketApp, message: str) -> None:
         message_data = json.loads(message)
         print(message_data)  # TODO: debug
         for handler in self.handlers:
-            handler(message_data)
+            # We must handle exception here because that occurred in callback does not thrown outer.
+            try:
+                handler(message_data)
+            except Exception as e:
+                traceback.print_exc()
+                self.logger('Exception occurred: {0}'.format(e))
 
     def run(self) -> None:
         params = urllib.parse.urlencode({'token': self.token})
