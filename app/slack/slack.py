@@ -34,13 +34,16 @@ def _logger(text: str):
 
 def run_client(slack_config: SlackConfig):
     rest_client = RestClient(slack_config.personal_token)
+    rtm_start = rest_client.rtm_start()
 
     init(
         slack_config,
         rest_client,
-        dict((user.id, user) for user in rest_client.get_users()),
-        dict((channel.id, channel) for channel in rest_client.get_channels()),
+        dict((user.id, user) for user in rtm_start.users),
+        dict((bot.id, bot) for bot in rtm_start.bots),
+        dict((channel.id, channel) for channel in rtm_start.channels),
+        rtm_start.self_.prefs.muted_channels
     )
 
     websocket_client = WebSocketClient(slack_config.collector_token, _logger, _HANDLERS)
-    websocket_client.run()
+    websocket_client.run(rtm_start.url)

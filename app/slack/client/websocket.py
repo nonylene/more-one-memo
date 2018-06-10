@@ -4,8 +4,6 @@ Slack slack.
 import json
 import time
 import traceback
-import urllib.parse
-import urllib.request
 from typing import Callable, List
 
 import websocket
@@ -50,16 +48,12 @@ class WebSocketClient:
                 traceback.print_exc()
                 self.logger('Exception occurred: {0}'.format(e))
 
-    def run(self) -> None:
-        params = urllib.parse.urlencode({'token': self.token})
+    def run(self, url: str) -> None:
+        # https://api.slack.com/methods/rtm.start
         try:
-            start_api = "https://slack.com/api/rtm.connect?{0}".format(params)
-            res = urllib.request.urlopen(start_api)
-            start_data = json.loads(res.read().decode())
-            websocket_url = start_data["url"]
             # websocket.enableTrace(True)
             ws = websocket.WebSocketApp(
-                websocket_url,
+                url,
                 on_message=self._on_message,
                 on_error=self._on_error,
                 on_open=self._on_open,

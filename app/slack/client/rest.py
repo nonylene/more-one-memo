@@ -3,7 +3,7 @@ import urllib.parse
 import urllib.request
 from typing import List, Optional
 
-from .model import Channel, User
+from .model import Channel, User, RtmStart
 
 
 class RestClient:
@@ -51,3 +51,15 @@ class RestClient:
         res = urllib.request.urlopen("https://slack.com/api/users.list?{0}".format(params))
         data = json.loads(res.read().decode())
         return [User.from_json(obj) for obj in data['members']]
+
+    def rtm_start(self):
+        # https://api.slack.com/methods/rtm.start
+        data = {
+            'token': self.token,
+            'no_latest': 1,
+            'no_unreads': 1,
+        }
+        params = urllib.parse.urlencode(data)
+        res = urllib.request.urlopen('https://slack.com/api/rtm.start?{0}'.format(params))
+        data = json.loads(res.read().decode())
+        return RtmStart.from_json(data)

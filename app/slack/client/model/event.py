@@ -1,6 +1,6 @@
 from typing import NamedTuple, Optional
 
-from .response import ChannelID, UserID
+from .response import ChannelID, UserID, BotID
 
 
 class Message(NamedTuple):
@@ -9,6 +9,7 @@ class Message(NamedTuple):
     subtype: Optional[str]
     channel: ChannelID
     user: UserID
+    botID: BotID
     text: Optional[str]
 
     @staticmethod
@@ -18,24 +19,28 @@ class Message(NamedTuple):
             # deleted -> no text
             return message_json.get('text')
 
-        def _get_user(message_json: dict) -> Optional[str]:
-            if 'user' in message_json:
-                return message_json.get('user')
-            else:
-                return message_json.get('bot_id')
+        def _get_user(message_json: dict) -> Optional[UserID]:
+            return message_json.get('user')
+
+        def _get_bot(message_json: dict) -> Optional[BotID]:
+            return message_json.get('bot_id')
 
         if 'message' in json:
             # e.g. thread_broadcast
             message = json['message']
             text = _get_text(message)
             user = _get_user(message)
+            bot = _get_bot(message)
         else:
             text = _get_text(json)
             user = _get_user(json)
-            if user is None:
+            bot = _get_bot(json)
+            if user is None and bot is None:
                 if 'comment' in json:
                     # e.g. file_comment
-                    user = _get_user(json['comment'])
+                    comment = json['comment']
+                    user = _get_user(comment)
+                    bot = _get_bot(comment)
 
         # normal message does not have subtype.
-        return Message(json.get('subtype'), json['channel'], user, text)
+        return Message(json.get('subtype'), json['channel'], user, bot, text)
