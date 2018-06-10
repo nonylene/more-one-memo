@@ -13,8 +13,8 @@ Handler = Callable[[dict], None]
 
 class WebSocketClient:
 
-    def __init__(self, token: str, logger: Callable[[str], None], handlers: List[Handler]) -> None:
-        self.token = token
+    def __init__(self, url: str, logger: Callable[[str], None], handlers: List[Handler]) -> None:
+        self.url = url
         self.logger = logger
         self.handlers = handlers
 
@@ -48,21 +48,14 @@ class WebSocketClient:
                 traceback.print_exc()
                 self.logger('Exception occurred: {0}'.format(e))
 
-    def run(self, url: str) -> None:
+    def run(self) -> None:
         # https://api.slack.com/methods/rtm.start
-        try:
-            # websocket.enableTrace(True)
-            ws = websocket.WebSocketApp(
-                url,
-                on_message=self._on_message,
-                on_error=self._on_error,
-                on_open=self._on_open,
-                on_close=self._on_close
-            )
-
-            ws.run_forever()
-
-        except Exception as e:
-            traceback.print_exc()
-            self.logger("Create websocket failed: {0}".format(e))
-            raise
+        # websocket.enableTrace(True)
+        ws = websocket.WebSocketApp(
+            self.url,
+            on_message=self._on_message,
+            on_error=self._on_error,
+            on_open=self._on_open,
+            on_close=self._on_close
+        )
+        ws.run_forever()

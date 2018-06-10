@@ -45,5 +45,5 @@ def run_client(slack_config: SlackConfig):
         rtm_start.self_.prefs.muted_channels
     )
 
-    websocket_client = WebSocketClient(slack_config.collector_token, _logger, _HANDLERS)
-    websocket_client.run(rtm_start.url)
+    websocket_client = WebSocketClient(rtm_start.url, _logger, _HANDLERS)
+    websocket_client.run()
