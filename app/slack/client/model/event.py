@@ -9,7 +9,7 @@ class Message(NamedTuple):
     subtype: Optional[str]
     channel: ChannelID
     user: UserID
-    botID: BotID
+    bot: BotID
     text: Optional[str]
 
     @staticmethod
