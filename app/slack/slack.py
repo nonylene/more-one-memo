@@ -1,9 +1,13 @@
+from google.cloud import datastore
+
 from . import handlers
 from .client import WebSocketClient, RestClient
 from .instance import GLOBAL_INSTANCE as GI
-from .instance import init
+from .instance import init, set_user_config
 from .message_handler import handle_message
 from .model import SlackConfig
+from ..data import get_config
+from ..data.model import DatastoreConfig
 
 _HANDLERS = [
     # Management
@@ -20,6 +24,9 @@ _HANDLERS = [
     handle_message,
 ]
 
+_DATASTORE_CLIENT = datastore.Client()
+_DATASTORE_CONFIG: DatastoreConfig = None
+
 
 def _logger(text: str):
     print(text)
@@ -32,7 +39,12 @@ def _logger(text: str):
     )
 
 
-def run_client(slack_config: SlackConfig):
+def run_client(datastore_config: DatastoreConfig, slack_config: SlackConfig):
+    global _DATASTORE_CONFIG
+    _DATASTORE_CONFIG = datastore_config
+
+    load_user_config()
+
     rest_client = RestClient(slack_config.personal_token)
     rtm_start = rest_client.rtm_start()
 
@@ -47,3 +59,7 @@ def run_client(slack_config: SlackConfig):
 
     websocket_client = WebSocketClient(rtm_start.url, _logger, _HANDLERS)
     websocket_client.run()
+
+
+def load_user_config():
+    set_user_config(get_config(_DATASTORE_CLIENT, _DATASTORE_CONFIG))

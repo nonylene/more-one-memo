@@ -32,3 +32,7 @@ SLACK_DEFAULT_ICON_EMOJI = ":upside_down_face:"
 """
 DATASTORE_CONFIG_KIND = "more-one-memo-config"
 
+"""
+id of config object in Google DataStore.
+"""
+DATASTORE_CONFIG_ID = "config-id"
