@@ -1,6 +1,6 @@
-from .client.model import Message
 from .handlers import handler
 from .instance import GLOBAL_INSTANCE as GI
+from ..slack.model import Message
 
 # Message handlers
 # https://api.slack.com/events/message

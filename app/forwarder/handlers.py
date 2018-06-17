@@ -1,8 +1,8 @@
 import functools
 from typing import Callable
 
-from .client import Handler
-from .client.model import User, Channel
+from ..slack import Handler
+from ..slack.model import User, Channel
 from .instance import GLOBAL_INSTANCE as GI
 
 

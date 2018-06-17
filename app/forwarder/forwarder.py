@@ -1,13 +1,13 @@
 from google.cloud import datastore
 
 from . import handlers
-from .client import WebSocketClient, RestClient
 from .instance import GLOBAL_INSTANCE as GI
 from .instance import init, set_user_config
 from .message_handler import handle_message
 from .model import SlackConfig
 from ..data import get_config
 from ..data.model import DatastoreConfig
+from ..slack import WebSocketClient, RestClient
 
 _HANDLERS = [
     # Management
@@ -39,7 +39,7 @@ def _logger(text: str):
     )
 
 
-def run_client(datastore_config: DatastoreConfig, slack_config: SlackConfig):
+def run(datastore_config: DatastoreConfig, slack_config: SlackConfig):
     global _DATASTORE_CONFIG
     _DATASTORE_CONFIG = datastore_config
 

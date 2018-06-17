@@ -1,4 +1,5 @@
 """
-slack package manages slack client (more-one-memo).
+slack package has lightweight slack client library.
 """
-from .slack import run_client, SlackConfig
+from .rest import RestClient
+from .websocket import WebSocketClient, Handler

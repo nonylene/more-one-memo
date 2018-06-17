@@ -1,10 +1,10 @@
 import re
 from typing import Dict, List, Pattern
 
-from .client import RestClient
-from .client.model import User, Channel, UserID, ChannelID, Bot, BotID
 from .model import SlackConfig
 from ..model import UserConfig
+from ..slack import RestClient
+from ..slack.model import User, Channel, UserID, ChannelID, Bot, BotID
 
 
 class Instance:
