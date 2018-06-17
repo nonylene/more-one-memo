@@ -43,8 +43,6 @@ def run(datastore_config: DatastoreConfig, slack_config: SlackConfig):
     global _DATASTORE_CONFIG
     _DATASTORE_CONFIG = datastore_config
 
-    load_user_config()
-
     rest_client = RestClient(slack_config.personal_token)
     rtm_start = rest_client.rtm_start()
 
@@ -57,9 +55,12 @@ def run(datastore_config: DatastoreConfig, slack_config: SlackConfig):
         rtm_start.self_.prefs.muted_channels
     )
 
+    load_user_config()
+
     websocket_client = WebSocketClient(rtm_start.url, _logger, _HANDLERS)
     websocket_client.run()
 
 
 def load_user_config():
     set_user_config(get_config(_DATASTORE_CLIENT, _DATASTORE_CONFIG))
+    _logger('User config reloaded!')
