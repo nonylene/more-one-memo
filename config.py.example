@@ -36,3 +36,18 @@ DATASTORE_CONFIG_KIND = "more-one-memo-config"
 id of config object in Google DataStore.
 """
 DATASTORE_CONFIG_ID = "config-id"
+
+"""
+Web API KEY.
+"""
+API_KEY = "api-key"
+
+"""
+Web bind host address.
+"""
+WEB_HOST_ADDRESS = "127.0.0.1"
+
+"""
+Web bind port number.
+"""
+WEB_PORT = 8888
