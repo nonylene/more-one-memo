@@ -2,7 +2,7 @@
 Common models.
 """
 
-from typing import NamedTuple, List, Dict
+from typing import NamedTuple, List, Dict, Any
 
 from google.cloud import datastore
 
@@ -19,8 +19,20 @@ class UserConfig(NamedTuple):
 
     @staticmethod
     def from_json(json: Dict):
+        def _check_items(items: Any, name: str):
+            items_type = type(items)
+            if items_type != list:
+                raise TypeError(f'{name} type should be list or empty but got {items_type}.')
+
+            for item in items:
+                item_type = type(item)
+                if item_type != str:
+                    raise TypeError(f'Item in {name} type should be str but got {item_type}.')
+
         def _get_or_empty(dic: Dict, key: str):
-            return dic[key] if key in dic else []
+            item = dic[key] if key in dic else []
+            _check_items(item, key)
+            return item
 
         return UserConfig(
             _get_or_empty(json, 'filter_regexps'),
