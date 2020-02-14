@@ -8,9 +8,9 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.7"
 websocket-client = "*"
-flask = "*"
 click = "*"
-pymongo = "*"
+aiohttp = "*"
+motor = "*"
 
 [tool.poetry.dev-dependencies]
 flake8 = "*"
@@ -18,10 +18,10 @@ autopep8 = "*"
 rope = "*"
 pylint = "*"
 
+[tool.poetry.scripts]
+more-one-memo_web = 'more_one_memo.web:main'
+more-one-memo_forwarder = 'more_one_memo.forwarder:main'
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
-[tool.poetry.scripts]
-more-one-memo_web = 'more_one_memo.web:main'
-more-one-memo_forwarder = 'more_one_memo.forwarder:main'
