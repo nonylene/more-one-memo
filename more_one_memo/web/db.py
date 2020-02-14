@@ -1,25 +1,30 @@
-from pymongo import MongoClient
+import motor.motor_asyncio
+from aiohttp import web
 
 from more_one_memo import data
 from more_one_memo.model import UserConfig
 
 from more_one_memo.web.model import WebConfig
 
-
-client: MongoClient = None
-
-
-def get_user_config() -> UserConfig:
-    return data.get_user_config(client)
+APP_CLIENT_KEY = 'mongo'
 
 
-def upsert_user_config(user_config: UserConfig):
-    data.upsert_user_config(client, user_config)
+async def get_user_config(app: web.Application) -> UserConfig:
+    return await data.get_user_config(app[APP_CLIENT_KEY])
 
 
-def init_db(web_config: WebConfig):
-    global client
-    client = MongoClient(web_config.mongo_uri)
-    if data.get_user_config_optional(client) is None:
+async def upsert_user_config(app: web.Application, user_config: UserConfig):
+    await data.upsert_user_config(app[APP_CLIENT_KEY], user_config)
+
+
+async def init_db(app: web.Application):
+    web_config: WebConfig = app['config']
+    client = motor.motor_asyncio.AsyncIOMotorClient(web_config.mongo_uri)
+    app[APP_CLIENT_KEY] = client
+    if await data.get_user_config_optional(client) is None:
         # Init user config
-        upsert_user_config(UserConfig.init())
+        await upsert_user_config(app, UserConfig.init())
+
+
+async def close_db(app: web.Application):
+    app[APP_CLIENT_KEY].close()
