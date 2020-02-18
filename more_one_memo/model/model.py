@@ -11,7 +11,6 @@ class UserConfig:
     channel_regexps: List[str]
     ignore_channels: List[str]
     ignore_users: List[str]
-    ignore_bots: List[str]
 
     @staticmethod
     def init():
@@ -38,7 +37,6 @@ class UserConfig:
             _get_or_empty(value, 'channel_regexps'),
             _get_or_empty(value, 'ignore_channels'),
             _get_or_empty(value, 'ignore_users'),
-            _get_or_empty(value, 'ignore_bots')
         )
 
     def to_dict(self) -> Dict:
@@ -46,5 +44,4 @@ class UserConfig:
             'channel_regexps': self.channel_regexps,
             'ignore_channels': self.ignore_channels,
             'ignore_users': self.ignore_users,
-            'ignore_bots': self.ignore_bots,
         }

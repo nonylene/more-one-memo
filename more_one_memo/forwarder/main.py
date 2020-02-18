@@ -1,3 +1,5 @@
+import asyncio
+
 import click
 
 from more_one_memo.forwarder import forwarder
@@ -17,9 +19,7 @@ from more_one_memo.forwarder.model import ForwarderConfig
 def main(
     mongo_uri, collector_token, poster_token, post_channel, debug_channel, default_username, default_icon_emoji
 ):
-    # # debug
-
-    slack_config = ForwarderConfig(
+    forwarder_config = ForwarderConfig(
         mongo_uri, collector_token, poster_token, post_channel, debug_channel, default_username, default_icon_emoji
     )
-    forwarder.run(slack_config)
+    asyncio.run(forwarder.run(forwarder_config))

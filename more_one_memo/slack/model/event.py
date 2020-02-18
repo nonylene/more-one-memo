@@ -1,48 +1,68 @@
 from typing import Optional
 from dataclasses import dataclass
 
-from more_one_memo.slack.model.response import ChannelID, UserID, BotID
+from more_one_memo.slack.model.response import ChannelID, UserID
 
 
 @dataclass
 class Message:
     # https://api.slack.com/events/message
 
+    @dataclass
+    # Shown in message_changed, thread_broadcast, ...
+    class Message:
+        type_: str
+        subtype: Optional[str]
+        user: Optional[UserID]
+        text: Optional[str]
+
+        @staticmethod
+        def from_json(json: dict):
+            return Message.Message(
+                json['type'], json.get('subtype'), json.get('user'), json.get('text')
+            )
+
     subtype: Optional[str]
     channel: ChannelID
-    user: UserID
-    bot: BotID
+    user: Optional[UserID]
     text: Optional[str]
+    message: Optional[Message]
+    previous_message: Optional[Message]
+
+    def get_text(self) -> Optional[str]:
+        if self.text is not None:
+            return self.text
+
+        if self.message is not None:
+            return self.message.text
+
+        return None
+
+    def get_user(self) -> Optional[str]:
+        if self.user is not None:
+            return self.user
+
+        if self.message is not None:
+            return self.message.user
+
+        return None
 
     @staticmethod
     def from_json(json: dict):
+        # Deleted -> no text
+        text = json.get('text')
+        user = json.get('user')
+        if user is None:
+            if 'comment' in json:
+                # e.g. file_comment
+                user = json['comment'].get('user')
 
-        def _get_text(message_json: dict) -> Optional[str]:
-            # deleted -> no text
-            return message_json.get('text')
-
-        def _get_user(message_json: dict) -> Optional[UserID]:
-            return message_json.get('user')
-
-        def _get_bot(message_json: dict) -> Optional[BotID]:
-            return message_json.get('bot_id')
-
+        message: Optional[Message.Message] = None
+        previous_message: Optional[Message.Message] = None
         if 'message' in json:
-            # e.g. thread_broadcast
-            message = json['message']
-            text = _get_text(message)
-            user = _get_user(message)
-            bot = _get_bot(message)
-        else:
-            text = _get_text(json)
-            user = _get_user(json)
-            bot = _get_bot(json)
-            if user is None and bot is None:
-                if 'comment' in json:
-                    # e.g. file_comment
-                    comment = json['comment']
-                    user = _get_user(comment)
-                    bot = _get_bot(comment)
+            message = Message.Message.from_json(json['message'])
+        if 'previous_message' in json:
+            previous_message = Message.Message.from_json(json['previous_message'])
 
         # normal message does not have subtype.
-        return Message(json.get('subtype'), json['channel'], user, bot, text)
+        return Message(json.get('subtype'), json['channel'], user, text, message, previous_message)

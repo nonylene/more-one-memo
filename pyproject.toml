@@ -7,10 +7,11 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-websocket-client = "*"
 click = "*"
 aiohttp = "*"
 motor = "*"
+websockets = "*"
+httpx = "*"
 
 [tool.poetry.dev-dependencies]
 flake8 = "*"

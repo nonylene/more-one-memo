@@ -8,15 +8,15 @@ from more_one_memo import data
 client: MongoClient = None
 
 
-def get_user_config() -> UserConfig:
-    return data.get_user_config(GLOBAL_INSTANCE.mongo_client)
+async def get_user_config() -> UserConfig:
+    return await data.get_user_config(GLOBAL_INSTANCE.mongo_client)
 
 
-def set_user_config(user_config: UserConfig):
-    data.upsert_user_config(GLOBAL_INSTANCE.mongo_client, user_config)
+async def set_user_config(user_config: UserConfig):
+    await data.upsert_user_config(GLOBAL_INSTANCE.mongo_client, user_config)
 
 
-def init_db():
-    if data.get_user_config_optional(GLOBAL_INSTANCE.mongo_client) is None:
+async def init_db():
+    if await data.get_user_config_optional(GLOBAL_INSTANCE.mongo_client) is None:
         # Init user config
-        set_user_config(UserConfig.init())
+        await set_user_config(UserConfig.init())
