@@ -25,6 +25,11 @@ async def _is_shown_message(message: Message) -> bool:
 
     if message.subtype in _IGNORED_EVENTS:
         return False
+    if not message.get_user():
+        if message.get_bot_id():
+            return False
+        else:
+            raise ValueError(f"There is no user or bot_id in message.\nMessage: {message}")
     # Ignore groups, dms, ...
     if not message.channel.startswith(_SLACK_CHANNEL_PREFIX):
         return False

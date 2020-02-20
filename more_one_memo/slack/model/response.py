@@ -2,6 +2,7 @@ from typing import List, Optional
 from dataclasses import dataclass
 
 UserID = str
+BotID = str
 ChannelID = str
 
 
