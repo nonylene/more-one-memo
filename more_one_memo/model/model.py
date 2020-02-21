@@ -14,7 +14,8 @@ class UserConfig:
 
     @staticmethod
     def init():
-        return UserConfig([], [], [], [])
+        # Ignore Slackbot by default
+        return UserConfig([".*"], [], ['USLACKBOT'])
 
     @staticmethod
     def from_dict(value: Dict):
