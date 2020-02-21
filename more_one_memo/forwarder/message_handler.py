@@ -20,6 +20,12 @@ _IGNORED_EVENTS = [
 _SLACK_CHANNEL_PREFIX = 'C'
 
 
+def _get_message_url(message: Message) -> str:
+    # 1582249008.070800 -> p1582249008070800
+    p_ts = f"p{''.join(message.ts.split('.'))}"
+    return f'https://{GI.team_domain}.slack.com/archives/{message.channel}/{p_ts}'
+
+
 async def _is_shown_message(message: Message) -> bool:
     user_config = await db.get_user_config()
 
@@ -70,9 +76,10 @@ async def handle_message(json: dict):
 
     channel = GI.channels[message.channel]
     user = GI.users[message.get_user()]
+    message_url = _get_message_url(message)
 
     await GI.rest_client.post_message(
-        f'`{channel.get_link()}` {message.get_text()}',
+        f'`<{message_url}|#{channel.name}>` {message.get_text()}',
         GI.slack_config.post_channel,
         user.name,
         None,

@@ -28,6 +28,7 @@ class Message:
     user: Optional[UserID]
     bot_id: Optional[BotID]
     text: Optional[str]
+    ts: str
     message: Optional[Message]
     previous_message: Optional[Message]
 
@@ -81,4 +82,6 @@ class Message:
             previous_message = Message.Message.from_json(json['previous_message'])
 
         # normal message does not have subtype.
-        return Message(json.get('subtype'), json['channel'], user, bot_id, text, message, previous_message)
+        return Message(
+            json.get('subtype'), json['channel'], user, bot_id, text, json['ts'], message, previous_message
+        )

@@ -15,9 +15,6 @@ class Channel:
     name: str
     is_archived: bool
 
-    def get_link(self):
-        return f'<#{self.id}|{self.name}>'
-
     @staticmethod
     def from_json(json: dict):
         return Channel(json['id'], json['name'], json['is_archived'])
@@ -78,8 +75,17 @@ class RtmStart:
                 RtmStart.Self.Prefs.from_json(json['prefs'])
             )
 
+    @dataclass
+    class Team:
+        domain: str
+
+        @staticmethod
+        def from_json(json: dict):
+            return RtmStart.Team(json['domain'])
+
     url: str
     self_: Self
+    team: Team
     users: List[User]
     channels: List[Channel]
 
@@ -88,6 +94,7 @@ class RtmStart:
         return RtmStart(
             json['url'],
             RtmStart.Self.from_json(json['self']),
+            RtmStart.Team.from_json(json['team']),
             [User.from_json(user) for user in json['users']],
             [Channel.from_json(channel) for channel in json['channels']],
         )

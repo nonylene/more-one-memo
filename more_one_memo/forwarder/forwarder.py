@@ -47,6 +47,7 @@ async def run(forwarder_config: ForwarderConfig):
         forwarder_config,
         AsyncIOMotorClient(forwarder_config.mongo_uri),
         poster_rest_client,
+        rtm_start.team.domain,
         dict((user.id, user) for user in rtm_start.users),
         dict((channel.id, channel) for channel in rtm_start.channels),
         rtm_start.self_.prefs.muted_channels
