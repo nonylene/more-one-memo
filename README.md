@@ -54,6 +54,8 @@ Options:
 
 ## Web
 
+Slack token needs `channels:read` and `users:read` permission scopes.
+
 ```
 $ poetry run more-one-memo_web --help
 Usage: more-one-memo_web [OPTIONS]
@@ -61,6 +63,8 @@ Usage: more-one-memo_web [OPTIONS]
 Options:
   --mongo-uri TEXT  MongoDB URI. Database name must be included  [env var:
                     MORE_ONE_MEMO_WEB_MONGO_URI; required]
+  --slack-token TEXT  Slack token to get channel and user information  [env
+                    var: MORE_ONE_MEMO_WEB_SLACK_TOKEN; required]
   --address TEXT    Bind address  [env var: MORE_ONE_MEMO_WEB_ADDRESS;
                     default: 127.0.0.1]
   --port INTEGER    Bind port  [env var: MORE_ONE_MEMO_WEB_PORT; default:
