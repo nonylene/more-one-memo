@@ -56,6 +56,8 @@ Options:
 
 Slack token needs `channels:read` and `users:read` permission scopes.
 
+**Caution**: This app has no authentication, so you should run this under authentication proxy (e.g. [oauth2_proxy](https://github.com/pusher/oauth2_proxy)) or firewall.
+
 ```
 $ poetry run more-one-memo_web --help
 Usage: more-one-memo_web [OPTIONS]
