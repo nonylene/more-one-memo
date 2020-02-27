@@ -1,5 +1,4 @@
-/* eslint-disable no-use-before-define */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
@@ -7,9 +6,13 @@ import { Channel } from '../../models/models';
 
 const channelToLabel = (channel: Channel) => `${channel.name} | ${channel.id}`
 
-export default function Tags() {
+export default function IgnoreChannelsInput() {
 
   const [channels, setChannels] = useState<Channel[]>([]);
+
+  useEffect(() => {
+    document.title = `You clicked ${count} times`;
+  }, []);
 
   return (
     <div className="IgnoreChannelsInput">
@@ -22,7 +25,6 @@ export default function Tags() {
         renderInput={params => (
           <TextField
             {...params}
-            variant="standard"
             label="Ignore channels"
             placeholder="Channels"
             fullWidth

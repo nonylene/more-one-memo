@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import IgnoreChannelsInput from '../ignore-channels-input/IgnoreChannelsInput';
+import ChannelRegExpsInput from '../channel-regexps-input/ChannelRegExpsInput';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -25,13 +26,7 @@ const App = () => {
       <Container className="App-container">
         <Grid container className="App-inputBox" justify="center">
           <Grid item xs={12} md={8}>
-            <IgnoreChannelsInput />
-          </Grid>
-        </Grid>
-
-        <Grid container className="App-inputBox" justify="center">
-          <Grid item xs={12} md={8}>
-            <IgnoreChannelsInput />
+            <ChannelRegExpsInput />
           </Grid>
         </Grid>
 
