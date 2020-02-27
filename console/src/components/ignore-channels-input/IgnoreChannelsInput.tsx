@@ -3,22 +3,30 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
 import { Channel } from '../../models/models';
+import { getSlackChannels } from '../../apiClient'
 
-const channelToLabel = (channel: Channel) => `${channel.name} | ${channel.id}`
+const channelToLabel = (channel: Channel) => `#${channel.name} | ${channel.id}`
 
 export default function IgnoreChannelsInput() {
 
   const [channels, setChannels] = useState<Channel[]>([]);
+  const [allChannels, setAllChannels] = useState<Channel[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    document.title = `You clicked ${count} times`;
+    setLoading(true);
+    getSlackChannels()
+      .then(setAllChannels).then(() => setLoading(false))
+      .catch(console.log);
   }, []);
 
   return (
     <div className="IgnoreChannelsInput">
       <Autocomplete
         multiple
-        options={exampleChannels}
+        options={allChannels}
+        loading={loading}
+        loadingText="Loading Slack channels..."
         getOptionLabel={channelToLabel}
         value={channels}
         onChange={(_, values) => setChannels(values)}
@@ -34,9 +42,3 @@ export default function IgnoreChannelsInput() {
     </div>
   );
 }
-
-const exampleChannels: Channel[] = [
-  { id: "C1111", name: "#foobar" },
-  { id: "C1122", name: "#foobaz" },
-  { id: "C1145", name: "#あああ" },
-]

@@ -36,12 +36,6 @@ const App = () => {
           </Grid>
         </Grid>
 
-        <Grid container className="App-inputBox" justify="center">
-          <Grid item xs={12} md={8}>
-            <IgnoreChannelsInput />
-          </Grid>
-        </Grid>
-
         <Grid container justify="center">
           <Grid item container xs={12} md={8} justify="flex-end">
             <Button variant="contained" color="primary">
