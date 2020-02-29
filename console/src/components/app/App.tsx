@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,13 +11,24 @@ import './App.css';
 import IgnoreChannelsInput from '../ignore-channels-input/IgnoreChannelsInput';
 import IgnoreUsersInput from "../ignore-users-input/IgnoreUsersInput";
 import ChannelRegExpsInput from '../channel-regexps-input/ChannelRegExpsInput';
-import { Channel, User } from '../../models/models';
+import { ChannelID, UserID } from '../../models/models';
+import { getUserConfig } from '../../apiClient';
 
 const App = () => {
 
   const [channelRegExps, setChannelRegExps] = useState<string[]>([]);
-  const [ignoreChannels, setIgnoreChannels] = useState<Channel[]>([]);
-  const [ignoreUsers, setIgnoreUsers] = useState<User[]>([]);
+  const [ignoreChannels, setIgnoreChannels] = useState<ChannelID[]>([]);
+  const [ignoreUsers, setIgnoreUsers] = useState<UserID[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getUserConfig()
+      .then(userConfig => {
+        setChannelRegExps(userConfig.channelRegExps)
+      }).then(() => setLoading(false))
+      .catch(console.log);
+  }, []);
 
   return (
     <div className="App">
@@ -34,19 +45,19 @@ const App = () => {
       <Container className="App-container">
         <Grid container className="App-inputBox" justify="center">
           <Grid item xs={12} md={8}>
-            <ChannelRegExpsInput value={channelRegExps} onChange={setChannelRegExps} />
+            <ChannelRegExpsInput value={channelRegExps} disabled={loading} onChange={setChannelRegExps} />
           </Grid>
         </Grid>
 
         <Grid container className="App-inputBox" justify="center">
           <Grid item xs={12} md={8}>
-            <IgnoreChannelsInput value={ignoreChannels} onChange={setIgnoreChannels} />
+            <IgnoreChannelsInput value={ignoreChannels} disabled={loading} onChange={setIgnoreChannels} />
           </Grid>
         </Grid>
 
         <Grid container className="App-inputBox" justify="center">
           <Grid item xs={12} md={8}>
-            <IgnoreUsersInput value={ignoreUsers} onChange={setIgnoreUsers} />
+            <IgnoreUsersInput value={ignoreUsers} disabled={loading} onChange={setIgnoreUsers} />
           </Grid>
         </Grid>
 

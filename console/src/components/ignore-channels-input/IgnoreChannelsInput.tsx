@@ -2,25 +2,30 @@ import React, { useState, useEffect } from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
-import { Channel } from '../../models/models';
+import { Channel, ChannelID } from '../../models/models';
 import { getSlackChannels } from '../../apiClient'
 
 type IgnoreChannelsInputProps = {
-  value: Channel[];
-  onChange: (channels: Channel[]) => void;
+  value: ChannelID[];
+  disabled: boolean;
+  onChange: (channelIds: ChannelID[]) => void;
 }
 
 const channelToLabel = (channel: Channel) => `#${channel.name} | ${channel.id}`
 
 export default function IgnoreChannelsInput(props: IgnoreChannelsInputProps) {
 
-  const [allChannels, setAllChannels] = useState<Channel[]>([]);
+  const [channelMap, setChannelMap] = useState<Map<ChannelID, Channel>>(new Map());
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     getSlackChannels()
-      .then(setAllChannels).then(() => setLoading(false))
+      .then(channels => {
+        const map = new Map(channels.map(c => [c.id, c]))
+        setChannelMap(map)
+      })
+      .then(() => setLoading(false))
       .catch(console.log);
   }, []);
 
@@ -28,17 +33,18 @@ export default function IgnoreChannelsInput(props: IgnoreChannelsInputProps) {
     <div className="IgnoreChannelsInput">
       <Autocomplete
         multiple
-        options={allChannels}
+        options={Array.from(channelMap.keys())}
         loading={loading}
+        disabled={props.disabled}
         loadingText="Loading Slack channels..."
-        getOptionLabel={channelToLabel}
+        getOptionLabel={opt => channelToLabel(channelMap.get(opt)!)}
         value={props.value}
         onChange={(_, values) => props.onChange(values)}
         renderInput={params => (
           <TextField
             {...params}
             label="Ignore channels"
-            placeholder="Channels"
+            placeholder="Channel"
             fullWidth
           />
         )}
