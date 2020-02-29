@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
 import { User, UserID } from '../../models/models';
@@ -25,6 +25,9 @@ export default function IgnoreUsersInput(props: IgnoreUsersInputProps) {
     return `@${user.name} | ${user.id}`
   }
 
+  // Use user name to filter
+  const filterOption = createFilterOptions({ stringify: getUserLabel })
+
   useEffect(() => {
     setLoading(true);
     getSlackUsers()
@@ -45,6 +48,7 @@ export default function IgnoreUsersInput(props: IgnoreUsersInputProps) {
         disabled={props.disabled}
         loadingText="Loading Slack users..."
         getOptionLabel={getUserLabel}
+        filterOptions={filterOption}
         value={props.value}
         onChange={(_, values) => props.onChange(values)}
         renderInput={params => (

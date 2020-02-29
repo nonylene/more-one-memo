@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
 import { Channel, ChannelID } from '../../models/models';
@@ -25,6 +25,9 @@ export default function IgnoreChannelsInput(props: IgnoreChannelsInputProps) {
     return `#${channel.name} | ${channel.id}`
   }
 
+  // Use channel name to filter
+  const filterOption = createFilterOptions({ stringify: getChannelLabel })
+
   useEffect(() => {
     setLoading(true);
     getSlackChannels()
@@ -45,6 +48,7 @@ export default function IgnoreChannelsInput(props: IgnoreChannelsInputProps) {
         disabled={props.disabled}
         loadingText="Loading Slack channels..."
         getOptionLabel={getChannelLabel}
+        filterOptions={filterOption}
         value={props.value}
         onChange={(_, values) => props.onChange(values)}
         renderInput={params => (
