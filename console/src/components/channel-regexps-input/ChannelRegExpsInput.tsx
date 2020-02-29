@@ -2,17 +2,20 @@ import React, { useState } from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
-export default function ChannelRegExpsInput() {
+type IgnoreChannelsInputProps = {
+  value: string[];
+  onChange: (channelRegExps: string[]) => void;
+}
 
-  const [channelRegExps, setChannelRegExps] = useState<string[]>([]);
+export default function ChannelRegExpsInput(props: IgnoreChannelsInputProps) {
 
   return (
     <div className="ChannelRegExpsInput">
       <Autocomplete<string>
         multiple
         freeSolo={true}
-        value={channelRegExps}
-        onChange={(_, values) => setChannelRegExps(values)}
+        value={props.value}
+        onChange={(_, values) => props.onChange(values)}
         renderInput={params => (
           <TextField
             {...params}

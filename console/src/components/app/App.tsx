@@ -1,7 +1,4 @@
-import React from 'react';
-import './App.css';
-import IgnoreChannelsInput from '../ignore-channels-input/IgnoreChannelsInput';
-import ChannelRegExpsInput from '../channel-regexps-input/ChannelRegExpsInput';
+import React, { useState } from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,7 +7,18 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Grid, Button } from '@material-ui/core';
 
+import './App.css';
+import IgnoreChannelsInput from '../ignore-channels-input/IgnoreChannelsInput';
+import IgnoreUsersInput from "../ignore-users-input/IgnoreUsersInput";
+import ChannelRegExpsInput from '../channel-regexps-input/ChannelRegExpsInput';
+import { Channel, User } from '../../models/models';
+
 const App = () => {
+
+  const [channelRegExps, setChannelRegExps] = useState<string[]>([]);
+  const [ignoreChannels, setIgnoreChannels] = useState<Channel[]>([]);
+  const [ignoreUsers, setIgnoreUsers] = useState<User[]>([]);
+
   return (
     <div className="App">
       <CssBaseline />
@@ -26,13 +34,19 @@ const App = () => {
       <Container className="App-container">
         <Grid container className="App-inputBox" justify="center">
           <Grid item xs={12} md={8}>
-            <ChannelRegExpsInput />
+            <ChannelRegExpsInput value={channelRegExps} onChange={setChannelRegExps} />
           </Grid>
         </Grid>
 
         <Grid container className="App-inputBox" justify="center">
           <Grid item xs={12} md={8}>
-            <IgnoreChannelsInput />
+            <IgnoreChannelsInput value={ignoreChannels} onChange={setIgnoreChannels} />
+          </Grid>
+        </Grid>
+
+        <Grid container className="App-inputBox" justify="center">
+          <Grid item xs={12} md={8}>
+            <IgnoreUsersInput value={ignoreUsers} onChange={setIgnoreUsers} />
           </Grid>
         </Grid>
 

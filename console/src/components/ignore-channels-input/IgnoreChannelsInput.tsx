@@ -5,11 +5,15 @@ import TextField from '@material-ui/core/TextField';
 import { Channel } from '../../models/models';
 import { getSlackChannels } from '../../apiClient'
 
+type IgnoreChannelsInputProps = {
+  value: Channel[];
+  onChange: (channels: Channel[]) => void;
+}
+
 const channelToLabel = (channel: Channel) => `#${channel.name} | ${channel.id}`
 
-export default function IgnoreChannelsInput() {
+export default function IgnoreChannelsInput(props: IgnoreChannelsInputProps) {
 
-  const [channels, setChannels] = useState<Channel[]>([]);
   const [allChannels, setAllChannels] = useState<Channel[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -28,8 +32,8 @@ export default function IgnoreChannelsInput() {
         loading={loading}
         loadingText="Loading Slack channels..."
         getOptionLabel={channelToLabel}
-        value={channels}
-        onChange={(_, values) => setChannels(values)}
+        value={props.value}
+        onChange={(_, values) => props.onChange(values)}
         renderInput={params => (
           <TextField
             {...params}
