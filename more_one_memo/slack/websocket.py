@@ -24,7 +24,7 @@ class WebSocketClient:
 
     async def _on_message(self, message: str) -> None:
         message_data = json.loads(message)
-        print(message_data)  # TODO: debug
+        # print(message_data) # For debug
         for handler in self.handlers:
             await handler(message_data)
 
