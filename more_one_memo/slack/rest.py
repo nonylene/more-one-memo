@@ -27,9 +27,12 @@ class RestClient:
 
         await self.client.get('https://slack.com/api/chat.postMessage', params=data)
 
-    async def get_public_channels(self, cursor: Optional[str] = None) -> Conversations:
+    async def get_public_channels(self, exclude_archived=True, cursor: Optional[str] = None) -> Conversations:
         # https://api.slack.com/methods/channels.list
-        data = {'limit': 1000}
+        data = {
+            'limit': 1000,
+            'exclude_archived': exclude_archived,
+        }
         if cursor is not None:
             data['cursor'] = cursor
         r = await self.client.get('https://slack.com/api/conversations.list', params=data)

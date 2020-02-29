@@ -50,8 +50,7 @@ async def slack_channels(request: web.Request):
             break
         await asyncio.sleep(0.5)
         next_cursor = conversations.response_metadata.next_cursor
-    # Return active channels only
-    channels = map(Channel.from_api, filter(lambda c: not c.is_archived, api_channels))
+    channels = map(Channel.from_api, api_channels)
     return web.json_response([c.to_dict() for c in channels])
 
 
