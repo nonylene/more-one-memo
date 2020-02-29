@@ -54,6 +54,52 @@ class User:
 
 
 @dataclass
+class Conversations:
+    # https://api.slack.com/methods/conversations.list
+
+    @dataclass
+    class ResponseMetadata:
+        next_cursor: Optional[str]
+
+        @staticmethod
+        def from_json(json: dict):
+            return Conversations.ResponseMetadata(json.get('next_cursor'))
+
+    channels: List[Channel]  # Regard Conversation as Channel
+    response_metadata: ResponseMetadata
+
+    @staticmethod
+    def from_json(json: dict):
+        return Conversations(
+            [Channel.from_json(obj) for obj in json['channels']],
+            Conversations.ResponseMetadata.from_json(json['response_metadata'])
+        )
+
+
+@dataclass
+class Users:
+    # https://api.slack.com/methods/users.list
+
+    @dataclass
+    class ResponseMetadata:
+        next_cursor: Optional[str]
+
+        @staticmethod
+        def from_json(json: dict):
+            return Users.ResponseMetadata(json.get('next_cursor'))
+
+    members: List[User]
+    response_metadata: ResponseMetadata
+
+    @staticmethod
+    def from_json(json: dict):
+        return Users(
+            [User.from_json(obj) for obj in json['members']],
+            Users.ResponseMetadata.from_json(json['response_metadata'])
+        )
+
+
+@dataclass
 class RtmStart:
     # https://api.slack.com/methods/rtm.start
 

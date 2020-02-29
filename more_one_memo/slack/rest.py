@@ -1,7 +1,7 @@
 import httpx
-from typing import List, Optional
+from typing import Optional
 
-from more_one_memo.slack.model import Channel, User, RtmStart, RtmConnect
+from more_one_memo.slack.model import RtmStart, RtmConnect, Conversations, Users
 
 
 class RestClient:
@@ -27,17 +27,23 @@ class RestClient:
 
         await self.client.get('https://slack.com/api/chat.postMessage', params=data)
 
-    async def get_channels(self) -> List[Channel]:
+    async def get_public_channels(self, cursor: Optional[str] = None) -> Conversations:
         # https://api.slack.com/methods/channels.list
-        r = await self.client.get('https://slack.com/api/channels.list')
+        data = {'limit': 1000}
+        if cursor is not None:
+            data['cursor'] = cursor
+        r = await self.client.get('https://slack.com/api/conversations.list', params=data)
         data = r.json()
-        return [Channel.from_json(obj) for obj in data['channels']]
+        return Conversations.from_json(data)
 
-    async def get_users(self) -> List[User]:
+    async def get_users(self, cursor: Optional[str] = None) -> Users:
         # https://api.slack.com/methods/users.list
-        r = await self.client.get('https://slack.com/api/users.list')
+        data = {'limit': 1000}
+        if cursor is not None:
+            data['cursor'] = cursor
+        r = await self.client.get('https://slack.com/api/users.list', params=data)
         data = r.json()
-        return [User.from_json(obj) for obj in data['members']]
+        return Users.from_json(data)
 
     async def rtm_start(self):
         # https://api.slack.com/methods/rtm.start

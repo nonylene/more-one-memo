@@ -1,4 +1,6 @@
 # from flask import Flask, request, jsonify
+import asyncio
+
 from aiohttp import web
 
 from more_one_memo.slack import RestClient
@@ -37,13 +39,29 @@ async def post_config(request: web.Request):
 
 @routes.get('/api/slack/channels')
 async def slack_channels(request: web.Request):
-    channels = map(Channel.from_api, await get_slack_client(app).get_channels())
+    channels = []
+    next_cursor = None
+    while True:
+        conversations = await get_slack_client(app).get_public_channels(cursor=next_cursor)
+        channels.extend([Channel.from_api(c) for c in conversations.channels])
+        if not conversations.response_metadata.next_cursor:
+            break
+        await asyncio.sleep(0.5)
+        next_cursor = conversations.response_metadata.next_cursor
     return web.json_response([c.to_dict() for c in channels])
 
 
 @routes.get('/api/slack/users')
 async def slack_users(request: web.Request):
-    users = map(User.from_api, await get_slack_client(app).get_users())
+    users = []
+    next_cursor = None
+    while True:
+        api_users = await get_slack_client(app).get_users(cursor=next_cursor)
+        users.extend([User.from_api(u) for u in api_users.members])
+        if not api_users.response_metadata.next_cursor:
+            break
+        await asyncio.sleep(0.5)
+        next_cursor = api_users.response_metadata.next_cursor
     return web.json_response([u.to_dict() for u in users])
 
 
