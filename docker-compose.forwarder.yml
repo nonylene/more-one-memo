@@ -9,6 +9,6 @@ services:
       MORE_ONE_MEMO_FORWARDER_MONGO_URI: mongodb://mongo/more-one-memo
     env_file: .env
     volumes:
-    - .:/app
+    - ./more_one_memo:/app/more_one_memo
   mongo:
     image: mongo
