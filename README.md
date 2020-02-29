@@ -78,6 +78,16 @@ Options:
 
 See [docker-compose.yaml](./docker-compose.yaml)
 
+```console
+# Web / console development
+$ docker-compose up
+```
+
+```console
+# Forwarder development
+$ docker-compose -f ./docker-compose.forwarder.yaml up
+```
+
 ## TODO
 
 - Web interface
