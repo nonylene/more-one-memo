@@ -22,26 +22,26 @@ routes = web.RouteTableDef()
 app = web.Application()
 
 
-@routes.get('/config')
+@routes.get('/api/config')
 async def get_config(request: web.Request):
     config = await get_user_config(app)
     return web.json_response(config.to_dict())
 
 
-@routes.post('/config')
+@routes.post('/api/config')
 async def post_config(request: web.Request):
     posted_json = await request.json()
     await upsert_user_config(app, UserConfig.from_dict(posted_json))
     return web.json_response((await get_user_config(app)).to_dict())
 
 
-@routes.get('/slack/channels')
+@routes.get('/api/slack/channels')
 async def slack_channels(request: web.Request):
     channels = map(Channel.from_api, await get_slack_client(app).get_channels())
     return web.json_response([c.to_dict() for c in channels])
 
 
-@routes.get('/slack/users')
+@routes.get('/api/slack/users')
 async def slack_users(request: web.Request):
     users = map(User.from_api, await get_slack_client(app).get_users())
     return web.json_response([u.to_dict() for u in users])
