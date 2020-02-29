@@ -95,7 +95,7 @@ $ docker-compose up
 
 ```console
 # Forwarder development
-$ docker-compose -f ./docker-compose.forwarder.yaml up
+$ docker-compose -f ./docker-compose.forwarder.yml up
 ```
 
 ## more-one-memo\_console
