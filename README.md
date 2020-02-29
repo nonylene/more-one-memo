@@ -74,7 +74,10 @@ Options:
   --help            Show this message and exit.
 ```
 
+## Development
+
+See [docker-compose.yaml](./docker-compose.yaml)
+
 ## TODO
 
 - Web interface
-- Dockerfile

@@ -1,0 +1,24 @@
+version: '3'
+services:
+  console:
+    build: ./console
+    ports:
+    - "3000:3000"
+    volumes:
+    - ./console:/app
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+      args:
+        poetry_flag: ""
+    ports:
+    - "8080:8080"
+    environment:
+      MORE_ONE_MEMO_WEB_MONGO_URI: mongodb://mongo/more-one-memo
+      MORE_ONE_MEMO_WEB_HOST: 0.0.0.0
+    env_file: .env
+    volumes:
+    - .:/app
+  mongo:
+    image: mongo
