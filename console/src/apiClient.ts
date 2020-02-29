@@ -17,3 +17,9 @@ export async function getUserConfig(): Promise<UserConfig> {
   const json: any[] = await response.json()
   return UserConfig.fromJson(json)
 }
+
+export async function postUserConfig(userConfig: UserConfig): Promise<UserConfig> {
+  const response = await fetch('/api/config', { method: 'POST', body: JSON.stringify(userConfig.toJson()) })
+  const json: any[] = await response.json()
+  return UserConfig.fromJson(json)
+}

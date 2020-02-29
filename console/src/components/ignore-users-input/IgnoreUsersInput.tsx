@@ -11,12 +11,19 @@ type IgnoreUsersInputProps = {
   onChange: (userIds: UserID[]) => void;
 }
 
-const userToLabel = (user: User) => `@${user.name} | ${user.id}`
-
 export default function IgnoreUsersInput(props: IgnoreUsersInputProps) {
 
   const [userMap, setUserMap] = useState<Map<UserID, User>>(new Map());
   const [loading, setLoading] = useState(false);
+
+  const getUserLabel = (opt: UserID) => {
+    const user = userMap.get(opt);
+    if (user == null) {
+      return opt
+    }
+
+    return `@${user.name} | ${user.id}`
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -37,7 +44,7 @@ export default function IgnoreUsersInput(props: IgnoreUsersInputProps) {
         loading={loading}
         disabled={props.disabled}
         loadingText="Loading Slack users..."
-        getOptionLabel={opt => userToLabel(userMap.get(opt)!)}
+        getOptionLabel={getUserLabel}
         value={props.value}
         onChange={(_, values) => props.onChange(values)}
         renderInput={params => (

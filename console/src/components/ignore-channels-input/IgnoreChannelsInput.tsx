@@ -11,12 +11,19 @@ type IgnoreChannelsInputProps = {
   onChange: (channelIds: ChannelID[]) => void;
 }
 
-const channelToLabel = (channel: Channel) => `#${channel.name} | ${channel.id}`
-
 export default function IgnoreChannelsInput(props: IgnoreChannelsInputProps) {
 
   const [channelMap, setChannelMap] = useState<Map<ChannelID, Channel>>(new Map());
   const [loading, setLoading] = useState(false);
+
+  const getChannelLabel = (opt: ChannelID) => {
+    const channel = channelMap.get(opt);
+    if (channel == null) {
+      return opt
+    }
+
+    return `#${channel.name} | ${channel.id}`
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -37,7 +44,7 @@ export default function IgnoreChannelsInput(props: IgnoreChannelsInputProps) {
         loading={loading}
         disabled={props.disabled}
         loadingText="Loading Slack channels..."
-        getOptionLabel={opt => channelToLabel(channelMap.get(opt)!)}
+        getOptionLabel={getChannelLabel}
         value={props.value}
         onChange={(_, values) => props.onChange(values)}
         renderInput={params => (

@@ -27,4 +27,12 @@ export class UserConfig {
   static fromJson(json: any) {
     return new UserConfig(json['channel_regexps'], json['ignore_channels'], json['ignore_users'])
   }
+
+  public toJson(): Object {
+    return {
+      'channel_regexps': this.channelRegExps,
+      'ignore_channels': this.ignoreChannels,
+      'ignore_users': this.ignoreUsers,
+    }
+  }
 }

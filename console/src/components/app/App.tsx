@@ -11,8 +11,8 @@ import './App.css';
 import IgnoreChannelsInput from '../ignore-channels-input/IgnoreChannelsInput';
 import IgnoreUsersInput from "../ignore-users-input/IgnoreUsersInput";
 import ChannelRegExpsInput from '../channel-regexps-input/ChannelRegExpsInput';
-import { ChannelID, UserID } from '../../models/models';
-import { getUserConfig } from '../../apiClient';
+import { ChannelID, UserID, UserConfig } from '../../models/models';
+import { getUserConfig, postUserConfig } from '../../apiClient';
 
 const App = () => {
 
@@ -21,12 +21,25 @@ const App = () => {
   const [ignoreUsers, setIgnoreUsers] = useState<UserID[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const applyUserConfig = (userConfig: UserConfig) => {
+    setChannelRegExps(userConfig.channelRegExps)
+    setIgnoreChannels(userConfig.ignoreChannels)
+    setIgnoreUsers(userConfig.ignoreUsers)
+  }
+
+  const submit = () => {
+    setLoading(true);
+    postUserConfig(new UserConfig(channelRegExps, ignoreChannels, ignoreUsers))
+      .then(applyUserConfig)
+      .then(() => setLoading(false))
+      .catch(console.log);
+  }
+
   useEffect(() => {
     setLoading(true);
     getUserConfig()
-      .then(userConfig => {
-        setChannelRegExps(userConfig.channelRegExps)
-      }).then(() => setLoading(false))
+      .then(applyUserConfig)
+      .then(() => setLoading(false))
       .catch(console.log);
   }, []);
 
@@ -63,7 +76,7 @@ const App = () => {
 
         <Grid container justify="center">
           <Grid item container xs={12} md={8} justify="flex-end">
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={submit}>
               Save
             </Button>
           </Grid>
