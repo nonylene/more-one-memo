@@ -1,27 +1,28 @@
 # vim: set ft=dockerfile :
-FROM python as dev
+FROM python as no-dev
+WORKDIR /app
+
+RUN pip3 install poetry
+
+COPY ./poetry.lock ./pyproject.toml /app/
+RUN poetry install --no-dev
+
+
+FROM no-dev as dev
+WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1
 
-RUN pip3 install poetry
-WORKDIR /app
-
-COPY ./poetry.lock ./pyproject.toml /app/
 RUN poetry install
 
 EXPOSE 8080
 ENTRYPOINT ["poetry", "run", "more-one-memo_web"]
 
 
-FROM python as prod
-
-ENV PYTHONUNBUFFERED=1
-
-RUN pip3 install poetry
+FROM no-dev as prod
 WORKDIR /app
 
-COPY ./poetry.lock ./pyproject.toml /app/
-RUN poetry install --no-dev
+ENV PYTHONUNBUFFERED=1
 
 COPY ./more_one_memo /app/more_one_memo
 

@@ -1,7 +1,9 @@
 version: '3.7'
 services:
   console:
-    build: ./console
+    build:
+      context: ./console
+      target: dev
     ports:
     - "3000:3000"
     volumes:

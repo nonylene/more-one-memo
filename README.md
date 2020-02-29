@@ -1,6 +1,6 @@
 # more-one-memo
 
-Post slack messages from **multiple** channels into **single** channel.
+Post Slack messages from **multiple** channels into **single** channel.
 
 Unlike "All unreads" feature in Slack, messages are sorted by posted time.
 
