@@ -1,26 +1,36 @@
 # more-one-memo
 
-**WIP**
-
 Post slack messages from **multiple** channels into **single** channel.
 
 Unlike "All unreads" feature in Slack, messages are sorted by posted time.
 
 This app also have API and web interface to configure.
 
-## Requirements
+## more-one-memo\_web, more-one-memo\_forwarder
+
+### Requirements
+
+- Docker
+
+or
 
 - Python 3.7 ~
   - poetry
 - MongoDB
 
-## Setup
+### Setup
+
+```bash
+$ docker-compose build
+```
+
+or
 
 ```bash
 $ poetry install
 ```
 
-## Forwarder
+### Forwarder
 
 ```
 $ poetry run more-one-memo_forwarder --help
@@ -52,7 +62,7 @@ Options:
   --help                     Show this message and exit.
 ```
 
-## Web
+### Web
 
 Slack token needs `channels:read` and `users:read` permission scopes.
 
@@ -74,7 +84,7 @@ Options:
   --help            Show this message and exit.
 ```
 
-## Development
+### Development
 
 See [docker-compose.yaml](./docker-compose.yaml)
 
@@ -88,6 +98,41 @@ $ docker-compose up
 $ docker-compose -f ./docker-compose.forwarder.yaml up
 ```
 
-## TODO
+## more-one-memo\_console
 
-- Web interface
+React app to configure forwarder. more-one-memo_web should be deployed under the same domain.
+
+### Requirements
+
+- Docker
+
+or
+
+- nodejs 12 ~
+
+### Setup
+
+```bash
+$ docker-compose build
+```
+
+or
+
+```bash
+$ cd console
+$ npm install
+```
+
+### Run
+
+```bash
+$ docker-compose up
+```
+
+or
+
+See [console/README.md](./console/README.md)
+
+## License
+
+See [LICENSE](./LICENSE) for more-one-memo and [DOCKER_NOTICE](https://github.com/nonylene/more-one-memo/blob/master/DOCKER_NOTICE) for Docker image notices.

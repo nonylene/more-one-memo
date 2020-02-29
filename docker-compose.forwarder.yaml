@@ -1,11 +1,10 @@
-version: '3'
+version: '3.7'
 services:
   forwarder:
     build:
       context: .
       dockerfile: Dockerfile.forwarder
-      args:
-        poetry_flag: ""
+      target: dev
     environment:
       MORE_ONE_MEMO_FORWARDER_MONGO_URI: mongodb://mongo/more-one-memo
     env_file: .env

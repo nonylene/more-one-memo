@@ -1,5 +1,5 @@
 # vim: set ft=dockerfile :
-FROM python
+FROM python as dev
 
 ENV PYTHONUNBUFFERED=1
 
@@ -7,8 +7,20 @@ RUN pip3 install poetry
 WORKDIR /app
 
 COPY ./poetry.lock ./pyproject.toml /app/
-ARG poetry_flag="--no-dev"
-RUN poetry install $poetry_flag
+RUN poetry install
+
+ENTRYPOINT ["poetry", "run", "more-one-memo_forwarder"]
+
+
+FROM python as prod
+
+ENV PYTHONUNBUFFERED=1
+
+RUN pip3 install poetry
+WORKDIR /app
+
+COPY ./poetry.lock ./pyproject.toml /app/
+RUN poetry install --no-dev
 
 COPY ./more_one_memo /app/more_one_memo
 
