@@ -1,11 +1,8 @@
 # from flask import Flask, request, jsonify
-import asyncio
-from typing import List
-
 from aiohttp import web
 
 from more_one_memo.slack import RestClient
-import more_one_memo.slack.model as slack_model
+import more_one_memo.slack.util as slack_util
 from more_one_memo.web.model import WebConfig, User, Channel
 from more_one_memo.web.db import get_user_config, upsert_user_config, init_db, close_db
 from more_one_memo.model import UserConfig
@@ -41,30 +38,14 @@ async def post_config(request: web.Request):
 
 @routes.get('/api/slack/channels')
 async def slack_channels(request: web.Request):
-    api_channels: List[slack_model.Channel] = []
-    next_cursor = None
-    while True:
-        conversations = await get_slack_client(app).get_public_channels(cursor=next_cursor)
-        api_channels.extend(conversations.channels)
-        if not conversations.response_metadata.next_cursor:
-            break
-        await asyncio.sleep(0.5)
-        next_cursor = conversations.response_metadata.next_cursor
+    api_channels = await slack_util.get_all_channels(get_slack_client(app))
     channels = map(Channel.from_api, api_channels)
     return web.json_response([c.to_dict() for c in channels])
 
 
 @routes.get('/api/slack/users')
 async def slack_users(request: web.Request):
-    api_users: List[slack_model.User] = []
-    next_cursor = None
-    while True:
-        slack_users = await get_slack_client(app).get_users(cursor=next_cursor)
-        api_users.extend(slack_users.members)
-        if not slack_users.response_metadata.next_cursor:
-            break
-        await asyncio.sleep(0.5)
-        next_cursor = api_users.response_metadata.next_cursor
+    api_users = await slack_util.get_all_users(get_slack_client(app))
     users = map(User.from_api, api_users)
     return web.json_response([u.to_dict() for u in users])
 
