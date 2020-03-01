@@ -39,8 +39,6 @@ async def _is_shown_message(message: Message) -> bool:
     # Ignore groups, dms, ...
     if not message.channel.startswith(_SLACK_CHANNEL_PREFIX):
         return False
-    if message.channel not in GI.muted_channels:
-        return False
     if message.channel in user_config.ignore_channels:
         return False
     if message.get_user() in user_config.ignore_users:
@@ -57,7 +55,9 @@ async def _is_shown_message(message: Message) -> bool:
             if message.message.text == message.previous_message.text:
                 return False
 
-    channel = GI.channels[message.channel]
+    channel = GI.active_channels[message.channel]
+    if channel.is_member and message.channel not in GI.muted_channels:
+        return False
     for regexp in user_config.channel_regexps:
         if re.match(regexp, channel.name):
             return True

@@ -14,10 +14,11 @@ class Channel:
     id: ChannelID
     name: str
     is_archived: bool
+    is_member: bool
 
     @staticmethod
     def from_json(json: dict):
-        return Channel(json['id'], json['name'], json['is_archived'])
+        return Channel(json['id'], json['name'], json['is_archived'], json['is_member'])
 
 
 @dataclass
