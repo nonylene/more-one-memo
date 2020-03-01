@@ -74,7 +74,7 @@ async def handle_message(json: dict):
     if not await _is_shown_message(message):
         return
 
-    channel = GI.channels[message.channel]
+    channel = GI.active_channels[message.channel]
     user = GI.users[message.get_user()]
     message_url = _get_message_url(message)
 

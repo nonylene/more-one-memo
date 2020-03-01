@@ -19,7 +19,7 @@ class Instance:
     rest_client: RestClient
     team_domain: str
     users: Dict[UserID, User]
-    channels: Dict[ChannelID, Channel]
+    active_channels: Dict[ChannelID, Channel]
     muted_channels: List[ChannelID]
 
 
@@ -30,12 +30,12 @@ def init(
         slack_config: ForwarderConfig,
         mongo_client: AsyncIOMotorClient, rest_client: RestClient,
         team_domain: str,
-        users: Dict[UserID, User], channels: Dict[ChannelID, Channel], muted_channels: List[ChannelID]
+        users: Dict[UserID, User], active_channels: Dict[ChannelID, Channel], muted_channels: List[ChannelID]
 ):
     GLOBAL_INSTANCE.slack_config = slack_config
     GLOBAL_INSTANCE.mongo_client = mongo_client
     GLOBAL_INSTANCE.rest_client = rest_client
     GLOBAL_INSTANCE.team_domain = team_domain
     GLOBAL_INSTANCE.users = users
-    GLOBAL_INSTANCE.channels = channels
+    GLOBAL_INSTANCE.active_channels = active_channels
     GLOBAL_INSTANCE.muted_channels = muted_channels

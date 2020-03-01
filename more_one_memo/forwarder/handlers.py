@@ -48,36 +48,34 @@ async def update_user_join(json: dict):
 
 @handler('channel_archive')
 async def update_channel_archive(json: dict):
-    id_ = json['channel']
-    channel = GI.channels[id_]
-    GI.channels[id_] = Channel(channel.id, channel.name, True)
+    del GI.active_channels[json['channel']]
 
 
 @handler('channel_unarchive')
 async def update_channel_unarchive(json: dict):
     id_ = json['channel']
-    channel = GI.channels[id_]
-    GI.channels[id_] = Channel(channel.id, channel.name, False)
+    channel = GI.active_channels[id_]
+    GI.active_channels[id_] = Channel(channel.id, channel.name, False)
 
 
 @handler('channel_created')
 async def update_channel_created(json: dict):
     channel_json = json['channel']
     id_ = channel_json['id']
-    GI.channels[id_] = Channel(id_, channel_json['name'], False)
+    GI.active_channels[id_] = Channel(id_, channel_json['name'], False)
 
 
 @handler('channel_deleted')
 async def update_channel_deleted(json: dict):
-    del GI.channels[json['channel']]
+    del GI.active_channels[json['channel']]
 
 
 @handler('channel_rename')
 async def update_channel_rename(json: dict):
     channel_json = json['channel']
     id_ = channel_json['id']
-    channel = GI.channels[id_]
-    GI.channels[id_] = Channel(channel.id, channel_json['name'], channel.is_archived)
+    channel = GI.active_channels[id_]
+    GI.active_channels[id_] = Channel(channel.id, channel_json['name'], channel.is_archived)
 
 # Pref
 
