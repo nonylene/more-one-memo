@@ -19,6 +19,8 @@ _HANDLERS = [
     handlers.update_channel_created,
     handlers.update_channel_deleted,
     handlers.update_channel_rename,
+    handlers.update_channel_left,
+    handlers.update_member_joined_channel,
     handlers.update_pref_change,
     # Message
     handle_message,
@@ -48,6 +50,7 @@ async def run(forwarder_config: ForwarderConfig):
         AsyncIOMotorClient(forwarder_config.mongo_uri),
         poster_rest_client,
         rtm_start.team.domain,
+        rtm_start.self_.id,
         dict((user.id, user) for user in rtm_start.users),
         dict((channel.id, channel) for channel in rtm_start.channels if not channel.is_archived),
         rtm_start.self_.prefs.muted_channels

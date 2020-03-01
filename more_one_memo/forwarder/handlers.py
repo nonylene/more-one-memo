@@ -55,14 +55,14 @@ async def update_channel_archive(json: dict):
 async def update_channel_unarchive(json: dict):
     id_ = json['channel']
     channel = GI.active_channels[id_]
-    GI.active_channels[id_] = Channel(channel.id, channel.name, False)
+    GI.active_channels[id_] = Channel(channel.id, channel.name, False, channel.is_member)
 
 
 @handler('channel_created')
 async def update_channel_created(json: dict):
     channel_json = json['channel']
     id_ = channel_json['id']
-    GI.active_channels[id_] = Channel(id_, channel_json['name'], False)
+    GI.active_channels[id_] = Channel(id_, channel_json['name'], False, False)
 
 
 @handler('channel_deleted')
@@ -75,7 +75,31 @@ async def update_channel_rename(json: dict):
     channel_json = json['channel']
     id_ = channel_json['id']
     channel = GI.active_channels[id_]
-    GI.active_channels[id_] = Channel(channel.id, channel_json['name'], channel.is_archived)
+    GI.active_channels[id_] = Channel(channel.id, channel_json['name'], channel.is_archived, channel.is_member)
+
+
+@handler('channel_left')
+async def update_channel_left(json: dict):
+    # member_left_channel event is not sent if the poster has left
+    # https://api.slack.com/events/channel_left
+    channel_id = json['channel']
+    channel = GI.active_channels[channel_id]
+    GI.active_channels[channel_id] = Channel(channel.id, channel.name, channel.is_archived, False)
+
+
+@handler('member_joined_channel')
+async def update_member_joined_channel(json: dict):
+    # https://api.slack.com/events/member_joined_channel
+    if json['channel_type'] != 'C':
+        return
+
+    if json['user'] != GI.user_id:
+        return
+
+    channel_id = json['channel']
+    channel = GI.active_channels[channel_id]
+    GI.active_channels[channel_id] = Channel(channel.id, channel.name, channel.is_archived, True)
+
 
 # Pref
 

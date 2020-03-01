@@ -106,6 +106,9 @@ class RtmStart:
 
     @dataclass
     class Self:
+
+        id: UserID
+
         @dataclass
         class Prefs:
             muted_channels: List[str]
@@ -119,6 +122,7 @@ class RtmStart:
         @staticmethod
         def from_json(json: dict):
             return RtmStart.Self(
+                json['id'],
                 RtmStart.Self.Prefs.from_json(json['prefs'])
             )
 

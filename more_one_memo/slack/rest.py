@@ -48,7 +48,7 @@ class RestClient:
         data = r.json()
         return Users.from_json(data)
 
-    async def rtm_start(self):
+    async def rtm_start(self) -> RtmStart:
         # https://api.slack.com/methods/rtm.start
         data = {
             'no_latest': 1,
@@ -57,7 +57,7 @@ class RestClient:
         data = r.json()
         return RtmStart.from_json(data)
 
-    async def rtm_connect(self):
+    async def rtm_connect(self) -> RtmConnect:
         # https://api.slack.com/methods/rtm.connect
         r = await self.client.get('https://slack.com/api/rtm.connect')
         data = r.json()
