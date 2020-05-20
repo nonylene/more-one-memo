@@ -55,7 +55,7 @@ async def _is_shown_message(message: Message) -> bool:
             if message.message.text == message.previous_message.text:
                 return False
 
-    channel = GI.active_channels[message.channel]
+    channel = GI.channels[message.channel]
     if channel.is_member and message.channel not in GI.muted_channels:
         return False
     for regexp in user_config.channel_regexps:
@@ -74,7 +74,7 @@ async def handle_message(json: dict):
     if not await _is_shown_message(message):
         return
 
-    channel = GI.active_channels[message.channel]
+    channel = GI.channels[message.channel]
     user = GI.users[message.get_user()]
     message_url = _get_message_url(message)
 
