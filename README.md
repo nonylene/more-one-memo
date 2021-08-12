@@ -135,4 +135,4 @@ See [console/README.md](./console/README.md)
 
 ## License
 
-See [LICENSE](./LICENSE) for more-one-memo and [DOCKER_NOTICE](https://github.com/nonylene/more-one-memo/blob/master/DOCKER_NOTICE) for Docker image notices.
+See [LICENSE](./LICENSE) for more-one-memo and [DOCKER_NOTICE](https://github.com/nonylene/more-one-memo/blob/main/DOCKER_NOTICE) for Docker image notices.
