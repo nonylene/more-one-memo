@@ -24,10 +24,10 @@ jobs:
        include:
          - image: "more-one-memo_forwarder"
            context: "."
-           dockerfile: "Dockerifle.forwarder"
+           dockerfile: "Dockerfile.forwarder"
          - image: "more-one-memo_web"
            context: "."
-           dockerfile: "Dockerifle.web"
+           dockerfile: "Dockerfile.web"
          - image: "more-one-memo_console"
            context: "console/"
            dockerfile: "console/Dockerifle"
