@@ -30,7 +30,7 @@ jobs:
            dockerfile: "Dockerfile.web"
          - image: "more-one-memo_console"
            context: "console/"
-           dockerfile: "console/Dockerifle"
+           dockerfile: "console/Dockerfile"
 
     runs-on: ubuntu-latest
     permissions:
