@@ -22,15 +22,18 @@ jobs:
     strategy:
       matrix:
        include:
-         - image: "more-one-memo_forwarder"
+         - image_suffix: "forwarder"
            context: "."
            dockerfile: "Dockerfile.forwarder"
-         - image: "more-one-memo_web"
+         - image_suffix: "web"
            context: "."
            dockerfile: "Dockerfile.web"
-         - image: "more-one-memo_console"
+         - image_suffix: "console"
            context: "console/"
            dockerfile: "console/Dockerfile"
+    
+    env:
+      IMAGE_NAME: nonylene/more-one-memo_${{ matrix.image_suffix }}
 
     runs-on: ubuntu-latest
     permissions:
@@ -57,7 +60,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ matrix.image }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
