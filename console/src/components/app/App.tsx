@@ -56,25 +56,16 @@ const App = () => {
       </AppBar>
 
       <Container className="App-container">
-        <Grid container className="App-inputBox" justifyContent="center">
+        <Grid container className="App-inputBox" justifyContent="center" spacing={3}>
           <Grid item xs={12} md={8}>
             <ChannelRegExpsInput value={channelRegExps} disabled={loading} onChange={setChannelRegExps} />
           </Grid>
-        </Grid>
-
-        <Grid container className="App-inputBox" justifyContent="center">
           <Grid item xs={12} md={8}>
             <IgnoreChannelsInput value={ignoreChannels} disabled={loading} onChange={setIgnoreChannels} />
           </Grid>
-        </Grid>
-
-        <Grid container className="App-inputBox" justifyContent="center">
           <Grid item xs={12} md={8}>
             <IgnoreUsersInput value={ignoreUsers} disabled={loading} onChange={setIgnoreUsers} />
           </Grid>
-        </Grid>
-
-        <Grid container justifyContent="center">
           <Grid item container xs={12} md={8} justifyContent="flex-end">
             <Button variant="contained" color="primary" onClick={submit}>
               Save
