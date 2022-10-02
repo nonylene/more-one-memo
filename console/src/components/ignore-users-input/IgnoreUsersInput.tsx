@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 import { User, UserID } from '../../models/models';
 import { getSlackUsers } from '../../apiClient'
@@ -56,8 +56,7 @@ export default function IgnoreUsersInput(props: IgnoreUsersInputProps) {
             {...params}
             label="Ignore users"
             placeholder="User"
-            fullWidth
-          />
+            fullWidth />
         )}
       />
     </div>

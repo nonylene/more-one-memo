@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { Grid, Button } from '@material-ui/core';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import CssBaseline from '@mui/material/CssBaseline';
+import { Grid, Button } from '@mui/material';
 
 import './App.css';
 import IgnoreChannelsInput from '../ignore-channels-input/IgnoreChannelsInput';
@@ -56,26 +56,26 @@ const App = () => {
       </AppBar>
 
       <Container className="App-container">
-        <Grid container className="App-inputBox" justify="center">
+        <Grid container className="App-inputBox" justifyContent="center">
           <Grid item xs={12} md={8}>
             <ChannelRegExpsInput value={channelRegExps} disabled={loading} onChange={setChannelRegExps} />
           </Grid>
         </Grid>
 
-        <Grid container className="App-inputBox" justify="center">
+        <Grid container className="App-inputBox" justifyContent="center">
           <Grid item xs={12} md={8}>
             <IgnoreChannelsInput value={ignoreChannels} disabled={loading} onChange={setIgnoreChannels} />
           </Grid>
         </Grid>
 
-        <Grid container className="App-inputBox" justify="center">
+        <Grid container className="App-inputBox" justifyContent="center">
           <Grid item xs={12} md={8}>
             <IgnoreUsersInput value={ignoreUsers} disabled={loading} onChange={setIgnoreUsers} />
           </Grid>
         </Grid>
 
-        <Grid container justify="center">
-          <Grid item container xs={12} md={8} justify="flex-end">
+        <Grid container justifyContent="center">
+          <Grid item container xs={12} md={8} justifyContent="flex-end">
             <Button variant="contained" color="primary" onClick={submit}>
               Save
             </Button>

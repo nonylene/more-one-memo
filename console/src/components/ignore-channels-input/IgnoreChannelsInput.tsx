@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 import { Channel, ChannelID } from '../../models/models';
 import { getSlackChannels } from '../../apiClient'
@@ -56,8 +56,7 @@ export default function IgnoreChannelsInput(props: IgnoreChannelsInputProps) {
             {...params}
             label="Ignore channels"
             placeholder="Channel"
-            fullWidth
-          />
+            fullWidth />
         )}
       />
     </div>
