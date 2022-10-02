@@ -1,8 +1,8 @@
 # more-one-memo
 
-Post Slack messages from **multiple** channels into **single** channel.
+Post Slack messages from **multiple** channels into a **single** channel.
 
-Unlike "All unreads" feature in Slack, messages are sorted by posted time.
+Unlike "All unreads" feature in Slack, messages are sorted by their posted time.
 
 This app also have API and web interface to configure.
 
@@ -14,7 +14,7 @@ This app also have API and web interface to configure.
 
 or
 
-- Python 3.7 ~
+- Python 3.10 ~
   - poetry
 - MongoDB
 
