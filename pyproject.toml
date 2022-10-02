@@ -6,7 +6,7 @@ authors = ["nonylene <nonylene@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.10"
 click = "*"
 aiohttp = "*"
 motor = "*"
@@ -25,4 +25,3 @@ more-one-memo_forwarder = 'more_one_memo.forwarder:main'
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
-
