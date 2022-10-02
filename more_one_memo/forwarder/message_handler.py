@@ -1,10 +1,9 @@
 import re
 
-from more_one_memo.slack.model import Message
-
 from more_one_memo.forwarder import db
 from more_one_memo.forwarder.handlers import handler
 from more_one_memo.forwarder.instance import GLOBAL_INSTANCE as GI
+from more_one_memo.slack.model import Message
 
 # Message handlers
 # https://api.slack.com/events/message

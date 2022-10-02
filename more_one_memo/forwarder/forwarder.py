@@ -1,14 +1,12 @@
-import traceback
 import time
+import traceback
 
-from motor.motor_asyncio import AsyncIOMotorClient
-
-from more_one_memo.slack import WebSocketClient, RestClient
-
-from more_one_memo.forwarder import handlers, instance, db
+from more_one_memo.forwarder import db, handlers, instance
 from more_one_memo.forwarder.instance import GLOBAL_INSTANCE as GI
 from more_one_memo.forwarder.message_handler import handle_message
 from more_one_memo.forwarder.model import ForwarderConfig
+from more_one_memo.slack import RestClient, WebSocketClient
+from motor.motor_asyncio import AsyncIOMotorClient
 
 _HANDLERS = [
     # Management

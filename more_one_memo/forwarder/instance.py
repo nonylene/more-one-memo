@@ -1,11 +1,9 @@
 from typing import Dict, List
 
-from motor.motor_asyncio import AsyncIOMotorClient
-
-from more_one_memo.slack import RestClient
-from more_one_memo.slack.model import User, Channel, UserID, ChannelID
-
 from more_one_memo.forwarder.model import ForwarderConfig
+from more_one_memo.slack import RestClient
+from more_one_memo.slack.model import Channel, ChannelID, User, UserID
+from motor.motor_asyncio import AsyncIOMotorClient
 
 
 class Instance:

@@ -1,9 +1,7 @@
 import motor.motor_asyncio
 from aiohttp import web
-
 from more_one_memo import data
 from more_one_memo.model import UserConfig
-
 from more_one_memo.web.model import WebConfig
 
 APP_CLIENT_KEY = 'mongo'

@@ -1,5 +1,5 @@
 import json
-from typing import Callable, List, Awaitable
+from typing import Awaitable, Callable, List
 
 # import websocket
 import websockets
@@ -30,10 +30,10 @@ class WebSocketClient:
 
     async def run(self, url: str) -> None:
         try:
-            async with websockets.connect(url) as websocket:
+            async with websockets.connect(url) as websocket:  # type: ignore
                 await self._notify_open()
                 async for message in websocket:
                     await self._on_message(message)
-        except websockets.exceptions.ConnectionClosed as e:
+        except websockets.exceptions.ConnectionClosed as e:  # type: ignore
             await self._notify_close()
             raise self.ConenctionClosedError from e

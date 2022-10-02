@@ -1,7 +1,6 @@
+import click
 from more_one_memo.web import web
 from more_one_memo.web.model import WebConfig
-
-import click
 
 
 @click.command(context_settings={'auto_envvar_prefix': 'MORE_ONE_MEMO_WEB'})

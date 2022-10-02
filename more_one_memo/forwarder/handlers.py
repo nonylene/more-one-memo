@@ -1,11 +1,9 @@
 import functools
 from typing import Callable, List
 
-from more_one_memo.slack import Handler
-from more_one_memo.slack.model import User, Channel, ChannelID
-
 from more_one_memo.forwarder.instance import GLOBAL_INSTANCE as GI
-
+from more_one_memo.slack import Handler
+from more_one_memo.slack.model import Channel, ChannelID, User
 
 # Management handlers https://api.slack.com/rtm#events
 

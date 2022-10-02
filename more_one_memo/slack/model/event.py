@@ -1,7 +1,7 @@
-from typing import Optional
 from dataclasses import dataclass
+from typing import Optional
 
-from more_one_memo.slack.model.response import ChannelID, UserID, BotID
+from more_one_memo.slack.model.response import BotID, ChannelID, UserID
 
 
 @dataclass

@@ -1,9 +1,7 @@
-from pymongo import MongoClient
-
+from more_one_memo import data
 from more_one_memo.forwarder.instance import GLOBAL_INSTANCE
 from more_one_memo.model import UserConfig
-from more_one_memo import data
-
+from pymongo import MongoClient
 
 client: MongoClient = None
 

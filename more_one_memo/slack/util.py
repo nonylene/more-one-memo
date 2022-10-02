@@ -1,8 +1,8 @@
-from typing import List
 import asyncio
+from typing import List
 
+from more_one_memo.slack.model import Channel, User
 from more_one_memo.slack.rest import RestClient
-from more_one_memo.slack.model import User, Channel
 
 
 async def get_all_users(client: RestClient) -> List[User]:
@@ -14,7 +14,7 @@ async def get_all_users(client: RestClient) -> List[User]:
         if not slack_users.response_metadata.next_cursor:
             break
         await asyncio.sleep(0.5)
-        next_cursor = users.response_metadata.next_cursor
+        next_cursor = slack_users.response_metadata.next_cursor
     return users
 
 

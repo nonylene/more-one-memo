@@ -1,11 +1,11 @@
 # from flask import Flask, request, jsonify
-from aiohttp import web
-
-from more_one_memo.slack import RestClient
 import more_one_memo.slack.util as slack_util
-from more_one_memo.web.model import WebConfig, User, Channel
-from more_one_memo.web.db import get_user_config, upsert_user_config, init_db, close_db
+from aiohttp import web
 from more_one_memo.model import UserConfig
+from more_one_memo.slack import RestClient
+from more_one_memo.web.db import (close_db, get_user_config, init_db,
+                                  upsert_user_config)
+from more_one_memo.web.model import Channel, User, WebConfig
 
 SLACK_CLIENT_KEY = 'slack_client'
 

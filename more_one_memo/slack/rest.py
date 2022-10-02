@@ -1,7 +1,8 @@
-import httpx
-from typing import Optional
+from typing import Any, Optional
 
-from more_one_memo.slack.model import RtmStart, RtmConnect, Conversations, Users
+import httpx
+from more_one_memo.slack.model import (Conversations, RtmConnect, RtmStart,
+                                       Users)
 
 
 class RestClient:
@@ -41,7 +42,7 @@ class RestClient:
 
     async def get_users(self, cursor: Optional[str] = None) -> Users:
         # https://api.slack.com/methods/users.list
-        data = {'limit': 1000}
+        data: dict[str, Any] = {'limit': 1000}
         if cursor is not None:
             data['cursor'] = cursor
         r = await self.client.get('https://slack.com/api/users.list', params=data)

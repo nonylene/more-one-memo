@@ -1,7 +1,6 @@
 import asyncio
 
 import click
-
 from more_one_memo.forwarder import forwarder
 from more_one_memo.forwarder.model import ForwarderConfig
 
