@@ -12,10 +12,11 @@ export default function ChannelRegExpsInput(props: IgnoreChannelsInputProps) {
 
   return (
     <div className="ChannelRegExpsInput">
-      <Autocomplete<string>
-        multiple
+      <Autocomplete<string, true, undefined, true>
+        multiple={true}
         freeSolo={true}
         disabled={props.disabled}
+        options={[]}
         value={props.value}
         onChange={(_, values) => props.onChange(values)}
         renderInput={params => (
