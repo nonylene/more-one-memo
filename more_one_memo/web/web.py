@@ -38,7 +38,7 @@ async def post_config(request: web.Request):
 
 @routes.get('/api/slack/channels')
 async def slack_channels(request: web.Request):
-    api_channels = await slack_util.get_all_channels(get_slack_client(app))
+    api_channels = await slack_util.get_all_public_channels(get_slack_client(app))
     channels = map(Channel.from_api, api_channels)
     return web.json_response([c.to_dict() for c in channels])
 

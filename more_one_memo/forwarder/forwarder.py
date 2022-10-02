@@ -1,6 +1,7 @@
 import time
 import traceback
 
+import more_one_memo.slack.util as slack_util
 from more_one_memo.forwarder import db, handlers, instance
 from more_one_memo.forwarder.instance import GLOBAL_INSTANCE as GI
 from more_one_memo.forwarder.message_handler import handle_message
@@ -41,19 +42,22 @@ async def run(forwarder_config: ForwarderConfig):
     collector_rest_client = RestClient(forwarder_config.collector_token)
 
     # Init
-    # We need to use rtm.start to get muted channels.
-    rtm_start = await poster_rest_client.rtm_start()
+    users = await slack_util.get_all_users(poster_rest_client)
+    channels = await slack_util.get_all_public_channels(poster_rest_client)
+    user_prefs = await poster_rest_client.get_users_prefs()
+
+    rtm_connect_poster = await poster_rest_client.rtm_connect()
     instance.init(
         forwarder_config,
         AsyncIOMotorClient(forwarder_config.mongo_uri),
         poster_rest_client,
-        rtm_start.team.domain,
-        rtm_start.self_.id,
-        dict((user.id, user) for user in rtm_start.users),
-        dict((channel.id, channel) for channel in rtm_start.channels),
-        rtm_start.self_.prefs.muted_channels
+        rtm_connect_poster.team.domain,
+        rtm_connect_poster.self_.id,
+        dict((user.id, user) for user in users),
+        dict((channel.id, channel) for channel in channels),
+        user_prefs.prefs.get_muted_channels(),
     )
-    del rtm_start
+    del rtm_connect_poster, users, channels, user_prefs
 
     await db.init_db()
 

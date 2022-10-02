@@ -1,2 +1,3 @@
 from .event import Message  # noqa: F401
-from .response import Channel, User, ChannelID, UserID, RtmStart, RtmConnect, Conversations, Users  # noqa: F401
+from .response import (Channel, ChannelID, Conversations,  # noqa: F401
+                       RtmConnect, User, UserID, UserPrefs, Users)

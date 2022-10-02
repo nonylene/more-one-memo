@@ -18,7 +18,7 @@ async def get_all_users(client: RestClient) -> List[User]:
     return users
 
 
-async def get_all_channels(client: RestClient) -> List[Channel]:
+async def get_all_public_channels(client: RestClient) -> List[Channel]:
     channels: List[Channel] = []
     next_cursor = None
     while True:

@@ -1,8 +1,8 @@
 from typing import Any, Optional
 
 import httpx
-from more_one_memo.slack.model import (Conversations, RtmConnect, RtmStart,
-                                       Users)
+from more_one_memo.slack.model import Conversations, RtmConnect, Users
+from more_one_memo.slack.model.response import UserPrefs
 
 
 class RestClient:
@@ -49,14 +49,11 @@ class RestClient:
         data = r.json()
         return Users.from_json(data)
 
-    async def rtm_start(self) -> RtmStart:
-        # https://api.slack.com/methods/rtm.start
-        data = {
-            'no_latest': 1,
-        }
-        r = await self.client.get('https://slack.com/api/rtm.start', params=data)
+    async def get_users_prefs(self) -> UserPrefs:
+        # https://github.com/slack-go/slack/blob/master/info.go
+        r = await self.client.get('https://slack.com/api/users.prefs.get')
         data = r.json()
-        return RtmStart.from_json(data)
+        return UserPrefs.from_json(data)
 
     async def rtm_connect(self) -> RtmConnect:
         # https://api.slack.com/methods/rtm.connect

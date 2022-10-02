@@ -101,29 +101,18 @@ class Users:
 
 
 @dataclass
-class RtmStart:
-    # https://api.slack.com/methods/rtm.start
+class RtmConnect:
+    # https://api.slack.com/methods/rtm.connect
 
     @dataclass
     class Self:
 
         id: UserID
 
-        @dataclass
-        class Prefs:
-            muted_channels: List[str]
-
-            @staticmethod
-            def from_json(json: dict):
-                return RtmStart.Self.Prefs(json['muted_channels'])
-
-        prefs: Prefs
-
         @staticmethod
         def from_json(json: dict):
-            return RtmStart.Self(
+            return RtmConnect.Self(
                 json['id'],
-                RtmStart.Self.Prefs.from_json(json['prefs'])
             )
 
     @dataclass
@@ -132,33 +121,41 @@ class RtmStart:
 
         @staticmethod
         def from_json(json: dict):
-            return RtmStart.Team(json['domain'])
+            return RtmConnect.Team(json['domain'])
 
     url: str
     self_: Self
     team: Team
-    users: List[User]
-    channels: List[Channel]
-
-    @staticmethod
-    def from_json(json: dict):
-        return RtmStart(
-            json['url'],
-            RtmStart.Self.from_json(json['self']),
-            RtmStart.Team.from_json(json['team']),
-            [User.from_json(user) for user in json['users']],
-            [Channel.from_json(channel) for channel in json['channels']],
-        )
-
-
-@dataclass
-class RtmConnect:
-    # https://api.slack.com/methods/rtm.connect
-
-    url: str
 
     @staticmethod
     def from_json(json: dict):
         return RtmConnect(
             json['url'],
+            RtmConnect.Self.from_json(json['self']),
+            RtmConnect.Team.from_json(json['team']),
+        )
+
+
+@dataclass
+class UserPrefs:
+    # https://github.com/slack-go/slack/blob/master/info.go
+
+    @dataclass
+    class Prefs:
+        # comma-separated channels
+        muted_channels: str
+
+        def get_muted_channels(self) -> list[str]:
+            return self.muted_channels.split(',')
+
+        @staticmethod
+        def from_json(json: dict):
+            return UserPrefs.Prefs(json['muted_channels'])
+
+    prefs: Prefs
+
+    @staticmethod
+    def from_json(json: dict):
+        return UserPrefs(
+            UserPrefs.Prefs.from_json(json['prefs']),
         )
