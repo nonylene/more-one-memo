@@ -5,7 +5,8 @@ WORKDIR /app
 RUN pip3 install poetry
 
 COPY ./poetry.lock ./pyproject.toml /app/
-RUN poetry install --no-dev
+COPY ./more_one_memo /app/more_one_memo
+RUN poetry install
 
 
 FROM no-dev as dev
@@ -13,7 +14,7 @@ WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1
 
-RUN poetry install
+RUN poetry install --with dev
 
 EXPOSE 8080
 ENTRYPOINT ["poetry", "run", "more-one-memo_web"]
@@ -23,8 +24,6 @@ FROM no-dev as prod
 WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1
-
-COPY ./more_one_memo /app/more_one_memo
 
 EXPOSE 8080
 ENTRYPOINT ["poetry", "run", "more-one-memo_web"]

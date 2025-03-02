@@ -3,7 +3,7 @@ from more_one_memo.forwarder.instance import GLOBAL_INSTANCE
 from more_one_memo.model import UserConfig
 from pymongo import MongoClient
 
-client: MongoClient = None
+client: MongoClient = None # type: ignore
 
 
 async def get_user_config() -> UserConfig:

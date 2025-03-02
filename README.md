@@ -90,12 +90,12 @@ See [docker-compose.yaml](./docker-compose.yaml)
 
 ```console
 # Web / console development
-$ docker-compose up
+$ docker compose up
 ```
 
 ```console
 # Forwarder development
-$ docker-compose -f ./docker-compose.forwarder.yml up
+$ docker compose -f ./docker-compose.forwarder.yml up
 ```
 
 ## more-one-memo\_console
@@ -113,7 +113,7 @@ or
 ### Setup
 
 ```bash
-$ docker-compose build
+$ docker compose build
 ```
 
 or
@@ -126,7 +126,7 @@ $ npm install
 ### Run
 
 ```bash
-$ docker-compose up
+$ docker compose up
 ```
 
 or
