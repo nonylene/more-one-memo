@@ -22,15 +22,16 @@ export class User {
 
 export class UserConfig {
 
-  constructor(public channelRegExps: string[], public ignoreChannels: ChannelID[], public ignoreUsers: UserID[], ) { }
+  constructor(public channelRegExpsMember: string[], public channelRegExpsNoMember: string[], public ignoreChannels: ChannelID[], public ignoreUsers: UserID[], ) { }
 
   static fromJson(json: any) {
-    return new UserConfig(json['channel_regexps'], json['ignore_channels'], json['ignore_users'])
+    return new UserConfig(json['channel_regexps_member'], json['channel_regexps_nomember'], json['ignore_channels'], json['ignore_users'])
   }
 
   public toJson(): Object {
     return {
-      'channel_regexps': this.channelRegExps,
+      'channel_regexps_member': this.channelRegExpsMember,
+      'channel_regexps_nomember': this.channelRegExpsNoMember,
       'ignore_channels': this.ignoreChannels,
       'ignore_users': this.ignoreUsers,
     }

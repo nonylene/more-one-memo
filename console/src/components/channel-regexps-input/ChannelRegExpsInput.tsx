@@ -5,10 +5,13 @@ import TextField from '@mui/material/TextField';
 type IgnoreChannelsInputProps = {
   value: string[];
   disabled: boolean;
+  member: boolean;
   onChange: (channelRegExps: string[]) => void;
 }
 
 export default function ChannelRegExpsInput(props: IgnoreChannelsInputProps) {
+
+  const label = props.member ? "Channel RegExps (member)" : "Channel RegExps (nomember)"
 
   return (
     <div className="ChannelRegExpsInput">
@@ -23,7 +26,7 @@ export default function ChannelRegExpsInput(props: IgnoreChannelsInputProps) {
           <TextField
             {...params}
             fullWidth
-            label="Channel RegExps"
+            label={label}
             placeholder="RegExp" />
         )}
       />

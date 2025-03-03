@@ -16,20 +16,22 @@ import { getUserConfig, postUserConfig } from '../../apiClient';
 
 const App = () => {
 
-  const [channelRegExps, setChannelRegExps] = useState<string[]>([]);
+  const [channelRegExpsMember, setChannelRegExpsMember] = useState<string[]>([]);
+  const [channelRegExpsNoMember, setChannelRegExpsNoMember] = useState<string[]>([]);
   const [ignoreChannels, setIgnoreChannels] = useState<ChannelID[]>([]);
   const [ignoreUsers, setIgnoreUsers] = useState<UserID[]>([]);
   const [loading, setLoading] = useState(false);
 
   const applyUserConfig = (userConfig: UserConfig) => {
-    setChannelRegExps(userConfig.channelRegExps)
+    setChannelRegExpsMember(userConfig.channelRegExpsMember)
+    setChannelRegExpsNoMember(userConfig.channelRegExpsNoMember)
     setIgnoreChannels(userConfig.ignoreChannels)
     setIgnoreUsers(userConfig.ignoreUsers)
   }
 
   const submit = () => {
     setLoading(true);
-    postUserConfig(new UserConfig(channelRegExps, ignoreChannels, ignoreUsers))
+    postUserConfig(new UserConfig(channelRegExpsMember, channelRegExpsNoMember, ignoreChannels, ignoreUsers))
       .then(applyUserConfig)
       .then(() => setLoading(false))
       .catch(console.log);
@@ -58,7 +60,10 @@ const App = () => {
       <Container className="App-container">
         <Grid container className="App-inputBox" justifyContent="center" spacing={3}>
           <Grid item xs={12} md={8}>
-            <ChannelRegExpsInput value={channelRegExps} disabled={loading} onChange={setChannelRegExps} />
+            <ChannelRegExpsInput value={channelRegExpsMember} member={true} disabled={loading} onChange={setChannelRegExpsMember} />
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <ChannelRegExpsInput value={channelRegExpsNoMember} member={false} disabled={loading} onChange={setChannelRegExpsNoMember} />
           </Grid>
           <Grid item xs={12} md={8}>
             <IgnoreChannelsInput value={ignoreChannels} disabled={loading} onChange={setIgnoreChannels} />

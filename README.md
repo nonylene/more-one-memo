@@ -21,7 +21,7 @@ or
 ### Setup
 
 ```bash
-$ docker-compose build
+$ docker compose build
 ```
 
 or

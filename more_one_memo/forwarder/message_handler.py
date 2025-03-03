@@ -9,20 +9,20 @@ from more_one_memo.slack.model import Message
 # https://api.slack.com/events/message
 
 _IGNORED_EVENTS = [
-    'bot_message',
-    'file_mention',
+    "bot_message",
+    "file_mention",
     # Hidden thread messages is represented as normal message. (2018-06-10)
     # thread_broadcast is also send as message_changed, but filtered on same text validation.
-    'message_replied',
+    "message_replied",
 ]
 
-_SLACK_CHANNEL_PREFIX = 'C'
+_SLACK_CHANNEL_PREFIX = "C"
 
 
 def _get_message_url(message: Message) -> str:
     # 1582249008.070800 -> p1582249008070800
     p_ts = f"p{''.join(message.ts.split('.'))}"
-    return f'https://{GI.team_domain}.slack.com/archives/{message.channel}/{p_ts}'
+    return f"https://{GI.team_domain}.slack.com/archives/{message.channel}/{p_ts}"
 
 
 async def _is_shown_message(message: Message) -> bool:
@@ -57,16 +57,22 @@ async def _is_shown_message(message: Message) -> bool:
                 return False
 
     channel = GI.channels[message.channel]
+    # Ignore non-muted && joined channels
     if channel.is_member and message.channel not in GI.muted_channels:
         return False
-    for regexp in user_config.channel_regexps:
-        if re.match(regexp, channel.name):
-            return True
+    if channel.is_member:
+        for regexp in user_config.channel_regexps_member:
+            if re.match(regexp, channel.name):
+                return True
+    else:
+        for regexp in user_config.channel_regexps_nomember:
+            if re.match(regexp, channel.name):
+                return True
 
     return False  # no matched.
 
 
-@handler('message')
+@handler("message")
 async def handle_message(json: dict):
     message = Message.from_json(json)
     if message.get_text() is None:
@@ -80,9 +86,9 @@ async def handle_message(json: dict):
     message_url = _get_message_url(message)
 
     await GI.rest_client.post_message(
-        f'`<{message_url}|#{channel.name}>` {message.get_text()}',
+        f"`<{message_url}|#{channel.name}>` {message.get_text()}",
         GI.slack_config.post_channel,
         user.name,
         None,
-        user.profile.get_image()
+        user.profile.get_image(),
     )
